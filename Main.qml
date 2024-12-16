@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
+import QtQuick.Effects
 import SddmComponents 2.0
 
 /* Colors:
@@ -23,6 +24,11 @@ Rectangle {
     readonly property real paddingSmall: 8.0
     readonly property real paddingMedium: 12.0
     readonly property real paddingBig: 16.0
+
+
+    TextConstants{
+       id:textConstants
+    }
 
     // Hex color like: "
     color: primaryContainer
@@ -48,12 +54,12 @@ Rectangle {
             console.log("infomration message succeeded");
         }
     }
+    // Date and time
+    Rectangle { 
+        width: root.width * 0.5
+        height: root.height * 0.3
 
-    Rectangle {
-       width: root.width*0.5
-       height: root.height*0.3
-
-       color: "#88ffffff"
+        color: "#88ffffff"
 
         anchors.left: parent.left
         anchors.bottom: parent.bottom
@@ -65,59 +71,70 @@ Rectangle {
             repeat: true
 
             onTriggered: {
-                date.text = Qt.formatDateTime(new Date(), "ddd, dd MMMM yyyy");
-		time.text = Qt.formatDateTime(new Date(), "HH:mmap");
-
+                date.text = Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy");
+                time.text = Qt.formatDateTime(new Date(), "HH:mmap");
             }
         }
 
+        Text {
+            id: date
 
-	Text {
-	   id: date
+            text: Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy")
 
-	   width: parent.width
-	   height:parent.height * 0.33
+            width: parent.width
+            height: parent.height * 0.33
 
-	   font.pixelSize: parent.height * 0.33
+            font.pixelSize: parent.height * 0.33
 
+            anchors.left: parent.left
+            anchors.bottom: time.top
+        }
 
-	   anchors.left: parent.left
-	   anchors.bottom: time.top
-	}
+        Text {
+            id: time
 
-	Text {
-	   id: time
+            text: Qt.formatDateTime(new Date(), "HH:mmap")
 
-	   width: parent.width
-	   height:parent.height * 0.66
+            width: parent.width
+            height: parent.height * 0.66
 
-	   font.pixelSize: parent.height * 0.66
-	   font.weight: 900
+            font.pixelSize: parent.height * 0.66
+            font.weight: 900
 
-	   anchors.bottom: parent.bottom
-	   anchors.right: date.right
-	}
-
+            anchors.bottom: parent.bottom
+            anchors.right: date.right
+        }
     }
 
     Rectangle {
+        id: login_box
 
         height: root.height / 2
         width: root.width / 4
 
         anchors.right: root.right
-	anchors.rightMargin: root.width*0.05
-	anchors.verticalCenter: root.verticalCenter
-
+        anchors.rightMargin: root.width * 0.05
+        anchors.verticalCenter: root.verticalCenter
 
         radius: root.containerCornerRadius
+
+	MultiEffect {
+	    source: login_box
+	    anchors.fill: login_box
+
+            autoPaddingEnabled: true
+	    shadowBlur: 0.4
+	    shadowColor: 'black'
+	    shadowEnabled: true
+	    // shadowVerticalOffset: 10
+	}
 
         Column {
 
             width: parent.width
             height: parent.height
 
-	    spacing: 10.0
+            spacing: 10.0
 
             Text {
                 id: helloText
@@ -206,7 +223,7 @@ Rectangle {
             Row {
                 Text {
                     height: 80
-                    text: "Session:"
+                    text: textConstants.session
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                 }
@@ -221,12 +238,25 @@ Rectangle {
                 }
             }
 
+            // Keyboard Layout
+            Row {
+                Text {
+                    height: 80
+                    text: textConstants.layout
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
+		LayoutBox {
+		   id: keyboard_layout
+		}
+            }
+
             Button {
                 id: login
 
                 text: "Login"
 
-		anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
 
                 onClicked: {
                     root.tryLogin();
