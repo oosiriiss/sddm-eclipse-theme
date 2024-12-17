@@ -3,18 +3,10 @@ import QtQuick.Controls
 import QtQuick.Effects
 import Qt5Compat.GraphicalEffects
 import SddmComponents
-
-/* Colors:
- *	- Hex format: "#AARRGGBB"
- *
- * Components: Rectangle, Text, Item, MouseArea
- *
- */
+import "./components"
 
 Rectangle {
    id: root
-
-   // Hex color like: "
 
    TextConstants {
       id: textConstants
@@ -23,77 +15,71 @@ Rectangle {
    Connections {
       target: sddm
 
-      function onLoginSucceeded() {
+      onLoginSucceeded: {
 	 console.log("Login succeeded");
       }
 
-      function onLoginFailed() {
+      onLoginFailed: {
 	 console.log("Login failed");
       }
 
-      function onInformationMessage() {
+      onInformationMessage: {
 	 console.log("infomration message succeeded");
       }
    }
 
-   readonly property color primary: config.primary ? config.primary : "#bb3333"
-   readonly property color secondary: config.secondary ? config.secondary : "#992222"
-
-   readonly property color primaryContainer: config.primaryContainer ? config.primaryContainer : "#222222"
-   readonly property color secondaryContainer: config.secondaryContainer ? config.secondaryContainer : "#444444"
-
-   readonly property real containerCornerRadius: config.containerCornerRadius ? config.containerCornerRadius : 12
-
-   readonly property real paddingSmall: 8.0
-   readonly property real paddingMedium: 12.0
-   readonly property real paddingBig: 16.0
-
-
+   AppStyle {
+      id:style
+   }
 
    signal tryLogin
 
-   function onTryLogin() {
-      console.log("xxx")
-      //sddm.login(username.text, password.text, session.index);
+   onTryLogin: {
+      sddm.login(username.text, password.text, session.index);
    }
 
    Image {
       id: background_img
       source: "images/eclipse.jpg"
       anchors.fill: parent
-
    }
    ShaderEffectSource {
-
-
-      id:background_blur
+      id: background_blur
       sourceItem: background_img
 
-      height:parent.height
-      width: login_box.width + root.width*0.08
+      height: parent.height
+      width: login_box.width + root.width * 0.08
 
       anchors.verticalCenter: root.verticalCenter
       anchors.horizontalCenter: login_box.horizontalCenter
    }
    GaussianBlur {
-      anchors.fill:background_blur
-      source:background_blur
+      anchors.fill: background_blur
+      source: background_blur
       radius: 10
    }
    Rectangle {
-      anchors.fill:background_blur
-      //color:"black"
-      //opacity:0.1
+      anchors.fill: background_blur
+
       gradient: Gradient {
-	 GradientStop {position: 0.0;color:"#11000000"}
-	 GradientStop {position: 0.25;color:"#44000000"}
-	 GradientStop {position: 0.25;color:"#44000000"}
-	 GradientStop {position: 0.0;color:"#11000000"}
+	 GradientStop {
+	    position: 0.0
+	    color: "#11000000"
+	 }
+	 GradientStop {
+	    position: 0.25
+	    color: "#44000000"
+	 }
+	 GradientStop {
+	    position: 0.25
+	    color: "#44000000"
+	 }
+	 GradientStop {
+	    position: 0.0
+	    color: "#11000000"
+	 }
       }
    }
-
-
-
 
    // Date and time
    Item {
@@ -123,7 +109,7 @@ Rectangle {
 	 text: Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy")
 	 font.pixelSize: parent.height * 0.22
 	 font.weight: 600
-	 color:root.primary
+	 color: style.primaryColor
 
 	 anchors.horizontalCenter: parent.horizontalCenter
       }
@@ -134,7 +120,7 @@ Rectangle {
 	 text: Qt.formatDateTime(new Date(), "hh:mmap")
 	 font.pixelSize: parent.height * 0.6
 	 font.weight: 900
-	 color:root.primary
+	 color: style.primaryColor
 
 	 anchors.top: date.bottom
 	 anchors.left: parent.left
@@ -145,20 +131,16 @@ Rectangle {
 	 anchors.fill: date
 	 autoPaddingEnabled: true
 	 shadowBlur: 1
-	 //shadowColor: root.primary
 	 shadowColor: "black"
 	 shadowEnabled: true
-	 // shadowVerticalOffset: 10
       }
       MultiEffect {
 	 source: time
 	 anchors.fill: time
 	 autoPaddingEnabled: true
 	 shadowBlur: 1
-	 //shadowColor: root.primary
 	 shadowColor: "black"
 	 shadowEnabled: true
-	 // shadowVerticalOffset: 10
       }
    }
 
@@ -172,7 +154,7 @@ Rectangle {
       anchors.rightMargin: root.width * 0.075
       anchors.verticalCenter: root.verticalCenter
 
-      radius: root.containerCornerRadius
+      radius: style.containerCornerRadius
 
       // Shadow around
       MultiEffect {
@@ -201,15 +183,25 @@ Rectangle {
 	    anchors.horizontalCenter: parent.horizontalCenter
 	 }
 
+	 InputField {
+	    width: parent.width * 0.8
+	    height:30
+	    anchors.horizontalCenter: parent.horizontalCenter
+
+	    placeholderText: "Username"
+	 }
+
+
+
 	 Rectangle {
 
 	    width: parent.width * 0.8
 	    height: 30
-	    radius: root.containerCornerRadius
+	    radius: style.containerCornerRadius
 
 	    anchors.horizontalCenter: parent.horizontalCenter
 
-	    border.color: root.primary
+	    border.color: style.primaryColor
 	    border.pixelAligned: true
 	    border.width: 2.0
 
@@ -221,8 +213,8 @@ Rectangle {
 	       width: parent.width
 	       height: parent.height
 
-	       leftPadding: root.paddingMedium
-	       rightPadding: root.paddingMedium
+	       leftPadding: style.paddingMedium
+	       rightPadding: style.paddingMedium
 
 	       verticalAlignment: TextInput.AlignVCenter
 	       horizontalAlignment: TextInput.AlignHCenter
@@ -243,11 +235,11 @@ Rectangle {
 
 	    width: parent.width * 0.8
 	    height: 30
-	    radius: root.containerCornerRadius
+	    radius: style.containerCornerRadius
 
 	    anchors.horizontalCenter: parent.horizontalCenter
 
-	    border.color: root.primary
+	    border.color: style.primaryColor
 	    border.pixelAligned: true
 	    border.width: 2.0
 
@@ -259,8 +251,8 @@ Rectangle {
 	       width: parent.width
 	       height: parent.height
 
-	       leftPadding: root.paddingMedium
-	       rightPadding: root.paddingMedium
+	       leftPadding: style.paddingMedium
+	       rightPadding: style.paddingMedium
 
 	       verticalAlignment: TextInput.AlignVCenter
 	       horizontalAlignment: TextInput.AlignHCenter
@@ -287,9 +279,7 @@ Rectangle {
 	       id: session
 	       model: sessionModel
 	       index: sessionModel.lastIndex
-
 	       height: parent.height
-
 	       anchors.verticalCenter: parent.verticalCenter
 	    }
 	 }
@@ -310,9 +300,7 @@ Rectangle {
 
 	 Button {
 	    id: login
-
 	    text: "Login"
-
 	    anchors.horizontalCenter: parent.horizontalCenter
 
 	    onClicked: {

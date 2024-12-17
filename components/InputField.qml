@@ -1,33 +1,43 @@
 import QtQuick
 
-
-
 Rectangle {
 
-   width: parent.width * 0.8
-   height: 30
+   AppStyle {
+      id:style
+   }
 
-   radius: 40
+    radius: 25
+    border.color: style.primaryColor 
+    border.pixelAligned: true
+    border.width: 2.0
 
-   anchors.horizontalCenter: parent.horizontalCenter
+    property alias text: textInput.text
+    property string placeholderText: ""
+    property real horizontalPadding: 15
 
-   border.color: root.primary
-   border.pixelAligned: true
-   border.width: 2.0
+    TextInput {
+        id: textInput
 
-   property string placeholderText: ""
-   property real inputPadding: 12
+        width: parent.width - (2 * parent.horizontalPadding)
+        height: parent.height
 
-   TextInput {
-      id: username
+        anchors.centerIn: parent
 
-      width: parent.width - (2* )
-      height: parent.height 
+	clip:true
+
+        verticalAlignment: TextInput.AlignVCenter
+        horizontalAlignment: TextInput.AlignHCenter
+    }
+
+    Text {
+      text:placeholderText
+      visible: !parent.text && !textInput.activeFocus
 
       anchors.centerIn: parent
 
-      verticalAlignment: TextInput.AlignVCenter
-      horizontalAlignment: TextInput.AlignHCenter
+      color: "#cc444444"
+    }
 
-   }
-}
+
+
+ }
