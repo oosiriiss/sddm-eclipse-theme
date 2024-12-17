@@ -82,8 +82,14 @@ Rectangle {
    }
    Rectangle {
       anchors.fill:background_blur
-      color:"black"
-      opacity:0.1
+      //color:"black"
+      //opacity:0.1
+      gradient: Gradient {
+	 GradientStop {position: 0.0;color:"#11000000"}
+	 GradientStop {position: 0.25;color:"#44000000"}
+	 GradientStop {position: 0.25;color:"#44000000"}
+	 GradientStop {position: 0.0;color:"#11000000"}
+      }
    }
 
 
@@ -119,7 +125,7 @@ Rectangle {
 	 font.weight: 600
 	 color:root.primary
 
-	 anchors.right: parent.right
+	 anchors.horizontalCenter: parent.horizontalCenter
       }
 
       Text {
@@ -156,176 +162,163 @@ Rectangle {
       }
    }
 
-   // Blur behind login
-   //Rectangle {
-      //   property var padding: root.width*0.05
+   Rectangle {
+      id: login_box
 
+      height: root.height / 2
+      width: root.width / 4
 
-      //    x: login_box.x - padding
+      anchors.right: root.right
+      anchors.rightMargin: root.width * 0.075
+      anchors.verticalCenter: root.verticalCenter
 
-      //    height: root.height
-      //    width: login_box.width + padding*2
-      //    color:"#88000000"
+      radius: root.containerCornerRadius
 
-      // }
+      // Shadow around
+      MultiEffect {
+	 source: login_box
+	 anchors.fill: login_box
+	 autoPaddingEnabled: true
+	 shadowBlur: 0.4
+	 shadowColor: 'black'
+	 shadowEnabled: true
+	 // shadowVerticalOffset: 10
+      }
 
-      Rectangle {
-	 id: login_box
+      Column {
 
-	 height: root.height / 2
-	 width: root.width / 4
+	 anchors.centerIn: parent
 
-	 anchors.right: root.right
-	 anchors.rightMargin: root.width * 0.05
-	 anchors.verticalCenter: root.verticalCenter
+	 height: parent.height * 0.7
+	 width: parent.width * 0.8
 
-	 radius: root.containerCornerRadius
+	 spacing: 10.0
 
-	 // Shadow around
-	 MultiEffect {
-	    source: login_box
-	    anchors.fill: login_box
-	    autoPaddingEnabled: true
-	    shadowBlur: 0.4
-	    shadowColor: 'black'
-	    shadowEnabled: true
-	    // shadowVerticalOffset: 10
+	 Text {
+	    text: "Login"
+	    font.pixelSize: parent.height * 0.1
+	    font.weight: 800
+	    anchors.horizontalCenter: parent.horizontalCenter
 	 }
 
-	 Column {
+	 Rectangle {
 
-	    anchors.centerIn: parent
-
-	    height: parent.height * 0.7
 	    width: parent.width * 0.8
+	    height: 30
+	    radius: root.containerCornerRadius
 
-	    spacing: 10.0
+	    anchors.horizontalCenter: parent.horizontalCenter
 
+	    border.color: root.primary
+	    border.pixelAligned: true
+	    border.width: 2.0
+
+	    TextField {
+	       id: username
+
+	       placeholderText: "Password"
+
+	       width: parent.width
+	       height: parent.height
+
+	       leftPadding: root.paddingMedium
+	       rightPadding: root.paddingMedium
+
+	       verticalAlignment: TextInput.AlignVCenter
+	       horizontalAlignment: TextInput.AlignHCenter
+
+	       echoMode: TextField.Password
+
+	       KeyNavigation.tab: login
+	       KeyNavigation.backtab: username
+	       Keys.onPressed: function (event) {
+		  if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+		     root.tryLogin();
+		  }
+	       }
+	    }
+	 }
+
+	 Rectangle {
+
+	    width: parent.width * 0.8
+	    height: 30
+	    radius: root.containerCornerRadius
+
+	    anchors.horizontalCenter: parent.horizontalCenter
+
+	    border.color: root.primary
+	    border.pixelAligned: true
+	    border.width: 2.0
+
+	    TextField {
+	       id: password
+
+	       placeholderText: "Password"
+
+	       width: parent.width
+	       height: parent.height
+
+	       leftPadding: root.paddingMedium
+	       rightPadding: root.paddingMedium
+
+	       verticalAlignment: TextInput.AlignVCenter
+	       horizontalAlignment: TextInput.AlignHCenter
+
+	       echoMode: TextField.Password
+
+	       KeyNavigation.tab: login
+	       KeyNavigation.backtab: username
+	       Keys.onPressed: function (event) {
+		  if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+		     root.tryLogin();
+		  }
+	       }
+	    }
+	 }
+
+	 // Session Row
+	 Row {
 	    Text {
-	       text: "Login"
-	       font.pixelSize: parent.height * 0.1
-	       font.weight: 800
-	       anchors.horizontalCenter: parent.horizontalCenter
+	       text: textConstants.session
+	       verticalAlignment: Text.AlignVCenter
 	    }
+	    ComboBox {
+	       id: session
+	       model: sessionModel
+	       index: sessionModel.lastIndex
 
-	    Rectangle {
+	       height: parent.height
 
-	       width: parent.width * 0.8
-	       height: 30
-	       radius: root.containerCornerRadius
-
-	       anchors.horizontalCenter: parent.horizontalCenter
-
-	       border.color: root.primary
-	       border.pixelAligned: true
-	       border.width: 2.0
-
-	       TextField {
-		  id: username
-
-		  placeholderText: "Password"
-
-		  width: parent.width
-		  height: parent.height
-
-		  leftPadding: root.paddingMedium
-		  rightPadding: root.paddingMedium
-
-		  verticalAlignment: TextInput.AlignVCenter
-		  horizontalAlignment: TextInput.AlignHCenter
-
-		  echoMode: TextField.Password
-
-		  KeyNavigation.tab: login
-		  KeyNavigation.backtab: username
-		  Keys.onPressed: function (event) {
-		     if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-			root.tryLogin();
-		     }
-		  }
-	       }
+	       anchors.verticalCenter: parent.verticalCenter
 	    }
+	 }
 
-	    Rectangle {
-
-	       width: parent.width * 0.8
-	       height: 30
-	       radius: root.containerCornerRadius
-
-	       anchors.horizontalCenter: parent.horizontalCenter
-
-	       border.color: root.primary
-	       border.pixelAligned: true
-	       border.width: 2.0
-
-	       TextField {
-		  id: password
-
-		  placeholderText: "Password"
-
-		  width: parent.width
-		  height: parent.height
-
-		  leftPadding: root.paddingMedium
-		  rightPadding: root.paddingMedium
-
-		  verticalAlignment: TextInput.AlignVCenter
-		  horizontalAlignment: TextInput.AlignHCenter
-
-		  echoMode: TextField.Password
-
-		  KeyNavigation.tab: login
-		  KeyNavigation.backtab: username
-		  Keys.onPressed: function (event) {
-		     if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-			root.tryLogin();
-		     }
-		  }
-	       }
+	 // Keyboard Layout
+	 Row {
+	    Text {
+	       height: 80
+	       text: textConstants.layout
+	       verticalAlignment: Text.AlignVCenter
 	    }
+	    LayoutBox {
+	       id: keyboard_layout
 
-	    // Session Row
-	    Row {
-	       Text {
-		  text: textConstants.session
-		  verticalAlignment: Text.AlignVCenter
-	       }
-	       ComboBox {
-		  id: session
-		  model: sessionModel
-		  index: sessionModel.lastIndex
-
-		  height: parent.height
-
-		  anchors.verticalCenter: parent.verticalCenter
-	       }
+	       anchors.verticalCenter: parent.verticalCenter
 	    }
+	 }
 
-	    // Keyboard Layout
-	    Row {
-	       Text {
-		  height: 80
-		  text: textConstants.layout
-		  verticalAlignment: Text.AlignVCenter
-	       }
-	       LayoutBox {
-		  id: keyboard_layout
+	 Button {
+	    id: login
 
-		  anchors.verticalCenter: parent.verticalCenter
-	       }
-	    }
+	    text: "Login"
 
-	    Button {
-	       id: login
+	    anchors.horizontalCenter: parent.horizontalCenter
 
-	       text: "Login"
-
-	       anchors.horizontalCenter: parent.horizontalCenter
-
-	       onClicked: {
-		  root.tryLogin();
-	       }
+	    onClicked: {
+	       root.tryLogin();
 	    }
 	 }
       }
    }
+}
