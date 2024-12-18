@@ -139,7 +139,6 @@ Rectangle {
             }
         }
 
-
 	MultiEffect {
 	   shadowEnabled:true
 	   shadowBlur:1
@@ -233,6 +232,54 @@ Rectangle {
         }
     }
 
+
+
+    // session and keyboard
+    Row {
+       width:login_box.width
+
+       anchors.top: parent.top
+       anchors.topMargin: 20
+       anchors.horizontalCenter:login_box.horizontalCenter
+       Text {
+	  id:session_label
+	  text: textConstants.session
+	  verticalAlignment: Text.AlignVCenter
+	  anchors.verticalCenter:parent.verticalCenter
+       }
+       SDDM.ComboBox {
+	  id: session
+	  model: sessionModel
+	  index: sessionModel.lastIndex
+	  anchors.verticalCenter: parent.verticalCenter
+	  anchors.left:session_label.right
+
+	  color:style.secondaryColor
+	  arrowColor:"black"
+	  focusColor: style.black
+	  hoverColor:style.primaryColor
+	  menuColor:style.secondaryColor
+	  textColor:"black"
+       }
+
+       //Keyboard Layout
+       Text {
+	  id:layout_label
+	  text: textConstants.layout
+	  verticalAlignment: Text.AlignVCenter
+
+	  anchors.verticalCenter:parent.verticalCenter
+	  anchors.right:keyboard_layout.left
+       }
+       SDDM.LayoutBox {
+	  id: keyboard_layout
+	  anchors.verticalCenter: parent.verticalCenter
+	  anchors.right:parent.right
+       }
+
+    }
+
+
     Item {
         id: login_box
 
@@ -243,89 +290,54 @@ Rectangle {
         anchors.rightMargin: root.width * 0.075
         anchors.verticalCenter: root.verticalCenter
 
-        // radius: style.containerCornerRadius
 
-        // Shadow around
-        //MultiEffect {
-        //   source: login_box
-        //   anchors.fill: login_box
-        //   autoPaddingEnabled: true
-        //   shadowBlur: 0.4
-        //   shadowColor: 'black'
-        //   shadowEnabled: true
-        //   // shadowVerticalOffset: 10
-        //}
 
         Column {
 
             anchors.centerIn: parent
 
-            height: parent.height * 0.7
+            height: parent.height * 0.8
             width: parent.width * 0.8
 
-            spacing: 10.0
 
-            // Session Row
-            Row {
-                Text {
-                    text: textConstants.session
-                    verticalAlignment: Text.AlignVCenter
-                }
-                SDDM.ComboBox {
-                    id: session
-                    model: sessionModel
-                    index: sessionModel.lastIndex
-                    height: parent.height
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
+	    Item {
+	       width:1
+	       height:parent.height*0.1
+	    }
 
-            // Keyboard Layout
-            Row {
-                Text {
-                    height: 80
-                    text: textConstants.layout
-                    verticalAlignment: Text.AlignVCenter
-                }
-                SDDM.LayoutBox {
-                    id: keyboard_layout
+	    InputField {
+	       id: username
+	       width: parent.width 
+	       height: parent.height * 0.15
+	       anchors.horizontalCenter: parent.horizontalCenter
 
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
+	       label:textConstants.userName
+	       placeholderText: textConstants.promptUser
 
-            //Text {
-            //   text: textConstants.login
-            //   font.pixelSize: parent.height * 0.1
-            //   font.weight: 800
-            //   anchors.horizontalCenter: parent.horizontalCenter
-            //}
+	       KeyNavigation.tab: password
+	       KeyNavigation.backtab: keyboard_layout
+	       Keys.onPressed: function (event) {
+		  if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+		     root.tryLogin();
+		  }
+	       }
+	    }
 
-            InputField {
-                id: username
-                width: parent.width * 0.8
-                height: parent.height * 0.1
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                placeholderText: textConstants.promptUse
-
-                KeyNavigation.tab: login
-                KeyNavigation.backtab: username
-                Keys.onPressed: function (event) {
-                    if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                        root.tryLogin();
-                    }
-                }
-            }
-
+	    // Spacer
+	    Item {
+	       height:parent.height*0.08
+	       width:1
+	    }
+	    
             InputField {
                 id: password
 
-                width: parent.width * 0.8
-                height: parent.height * 0.1
+                width: parent.width
+                height: parent.height * 0.15
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 placeholderText: textConstants.promptPassword
+		label: textConstants.password
 
                 isPassword: true
 
@@ -338,14 +350,31 @@ Rectangle {
                 }
             }
 
+	    Item {
+	       height:parent.height*0.15
+	       width:1
+	    }
+
             Button {
                 id: login
                 text: textConstants.login
                 anchors.horizontalCenter: parent.horizontalCenter
 
+		width:parent.width*0.4
+		height:parent.height*0.1
+
+		font.pixelSize: parent.height*0.05
+		font.weight:700
+
                 onClicked: {
                     root.tryLogin();
                 }
+
+		background: Rectangle {
+		   radius:10
+		   color:style.secondaryColor
+
+		}
             }
         }
     }

@@ -1,103 +1,123 @@
 import QtQuick
 
-Rectangle {
-    id: bg
+Item {
+    id: root
+
     property alias text: textInput.text
     property string placeholderText: ""
-    property real horizontalPadding: 15
+    property string label: ""
     property bool isPassword: false
 
     AppStyle {
         id: style
     }
 
-    radius: 10
-    border.color: style.primaryColor
-    border.pixelAligned: true
-    border.width: 2.0
-
-    layer.enabled: true
-    layer.smooth: true
-
-    color: "transparent"
-
     Text {
-        text: bg.placeholderText
-        visible: !bg.text && !textInput.activeFocus
-        anchors.centerIn: parent
-        color: "#cc444444"
+        id: labelText
+        text: root.label
+        font.pixelSize: parent.height * 0.25
+        font.weight: 600
+        color: style.secondaryColor
+        anchors.bottom: bg.top
+        anchors.bottomMargin: 2
     }
 
-    TextInput {
-        id: textInput
+    Rectangle {
+        id: bg
 
-        clip: true
+        height: root.label ? parent.height * 0.75 : parent.height
+        width: parent.width
 
-        echoMode: bg.isPassword ? TextInput.Password : TextInput.Normal
-        passwordCharacter: style.passwordCharacter
+        radius: 10
+        border.color: style.primaryColor
+        border.pixelAligned: true
+        border.width: 2.0
 
-	font.pixelSize: parent.height * 0.5
+        layer.enabled: true
+        layer.smooth: true
 
-        width: parent.width - (2 * bg.horizontalPadding)
-        height: parent.height
-        anchors.centerIn: bg
+        color: "transparent"
 
-        verticalAlignment: TextInput.AlignVCenter
-        horizontalAlignment: TextInput.AlignHCenter
+        Text {
+            text: root.placeholderText
+            visible: !root.text && !textInput.activeFocus
+            font.pixelSize: parent.height * 0.4
+            anchors.centerIn: parent
+            color: "#cc444444"
+        }
 
-	color:style.primaryColor
+        TextInput {
+            id: textInput
 
+            clip: true
 
-        state: "unfocused"
+            echoMode: root.isPassword ? TextInput.Password : TextInput.Normal
+            passwordCharacter: style.passwordCharacter
 
-        states: [
-            State {
-                name: "focused"
-                when: textInput.activeFocus
-                PropertyChanges {
-                    bg.border.color: style.primaryColor
-                    bg.border.width: 3.0
+            font.pixelSize: parent.height * 0.4
+
+            width: parent.width - 35
+            height: parent.height
+            anchors.centerIn: parent
+
+            verticalAlignment: TextInput.AlignVCenter
+            horizontalAlignment: TextInput.AlignHCenter
+
+            color: style.primaryColor
+
+            state: "unfocused"
+
+            states: [
+                State {
+                    name: "focused"
+                    when: textInput.activeFocus
+                    PropertyChanges {
+                        bg.border.color: style.primaryColor
+                        bg.border.width: 3.0
+                        labelText.color: style.primaryColor
+                    }
+                },
+                State {
+                    name: "unfocused"
+                    when: !textInput.activeFocus
+                    PropertyChanges {
+                        bg.border.color: style.secondaryColor
+                        bg.border.width: 2.0
+                        labelText.color: style.secondaryColor
+                    }
                 }
-            },
-            State {
-                name: "unfocused"
-                when: !textInput.activeFocus
-                PropertyChanges {
-                    bg.border.color: style.secondaryColor
-                    bg.border.width: 2.0
-                }
-            }
-        ]
+            ]
 
-        transitions: [
-            Transition {
-                from: "unfocused"
-                to: "focused"
-                NumberAnimation {
-                    property: "bg.border.width"
-                    duration: 100
-                    easing.type: Easing.InBounce
+            transitions: [
+                Transition {
+                    from: "unfocused"
+                    to: "focused"
+                    NumberAnimation {
+                        property: "bg.border.width"
+                        duration: 100
+                        easing.type: Easing.InBounce
+                    }
+                    ColorAnimation {
+                        properties: "bg.border.color; textLabel.color"
+                        duration: 200
+                        easing.type: Easing.InBounce
+                    }
+                },
+                Transition {
+                    from: "focused"
+                    to: "unfocused"
+                    NumberAnimation {
+                        property: "bg.border.width"
+                        duration: 100
+                        easing.type: Easing.OutBounce
+                    }
+                    ColorAnimation {
+                        properties: "bg.border.color; textLabel.color"
+                        duration: 200
+                        easing.type: Easing.OutBounce
+                    }
                 }
-                ColorAnimation {
-                    property: "bg.border.color"
-                    duration: 200
-                    easing.type: Easing.InBounce
-                }
-            },
-            Transition {
-                from: "focused"
-                to: "unfocused"
-                NumberAnimation {
-                    property: "bg.border.width"
-                    duration: 100
-                    easing.type: Easing.OutBounce
-                }
-                ColorAnimation {
-                    property: "bg.border.color"
-                    duration: 200
-                    easing.type: Easing.OutBounce
-                }
-            }
-        ]
+            ]
+        }
     }
 }
