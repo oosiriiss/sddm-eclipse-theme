@@ -19,7 +19,7 @@ Rectangle {
     layer.enabled: true
     layer.smooth: true
 
-    color: "#55ffffff"
+    color: "transparent"
 
     Text {
         text: bg.placeholderText
@@ -31,18 +31,22 @@ Rectangle {
     TextInput {
         id: textInput
 
+        clip: true
+
+        echoMode: bg.isPassword ? TextInput.Password : TextInput.Normal
+        passwordCharacter: style.passwordCharacter
+
+	font.pixelSize: parent.height * 0.5
+
         width: parent.width - (2 * bg.horizontalPadding)
         height: parent.height
-
         anchors.centerIn: bg
-
-        clip: true
 
         verticalAlignment: TextInput.AlignVCenter
         horizontalAlignment: TextInput.AlignHCenter
 
-        echoMode: bg.isPassword ? TextInput.Password : TextInput.Normal
-        passwordCharacter: style.passwordCharacter
+	color:style.primaryColor
+
 
         state: "unfocused"
 
