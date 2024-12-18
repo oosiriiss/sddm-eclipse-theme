@@ -3,7 +3,7 @@ import SddmComponents 2.0
 
 QtObject {
     // Todo:: Modifyable in config
-    readonly property color primaryColor: config.primaryColor ? config.primaryColor : "#bb3333"
+    readonly property color primaryColor: config.primaryColor ? config.primaryColor : "#dd5555"
     readonly property color secondaryColor: config.secondaryColor ? config.secondaryColor : "#992222"
 
     readonly property color primaryContainerColor: config.primaryContainerColor ? config.primaryContainerColor : "#222222"

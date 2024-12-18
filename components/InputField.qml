@@ -14,10 +14,12 @@ Rectangle {
     radius: 10
     border.color: style.primaryColor
     border.pixelAligned: true
-    border.width: 3.0
+    border.width: 2.0
 
     layer.enabled: true
     layer.smooth: true
+
+    color: "#55ffffff"
 
     Text {
         text: bg.placeholderText
@@ -49,14 +51,16 @@ Rectangle {
                 name: "focused"
                 when: textInput.activeFocus
                 PropertyChanges {
-                    bg.border.color: "red"
+                    bg.border.color: style.primaryColor
+                    bg.border.width: 3.0
                 }
             },
             State {
                 name: "unfocused"
                 when: !textInput.activeFocus
                 PropertyChanges {
-                    bg.border.color: "green"
+                    bg.border.color: style.secondaryColor
+                    bg.border.width: 2.0
                 }
             }
         ]
@@ -65,6 +69,11 @@ Rectangle {
             Transition {
                 from: "unfocused"
                 to: "focused"
+                NumberAnimation {
+                    property: "bg.border.width"
+                    duration: 100
+                    easing.type: Easing.InBounce
+                }
                 ColorAnimation {
                     property: "bg.border.color"
                     duration: 200
@@ -74,6 +83,11 @@ Rectangle {
             Transition {
                 from: "focused"
                 to: "unfocused"
+                NumberAnimation {
+                    property: "bg.border.width"
+                    duration: 100
+                    easing.type: Easing.OutBounce
+                }
                 ColorAnimation {
                     property: "bg.border.color"
                     duration: 200
