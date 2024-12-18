@@ -6,307 +6,301 @@ import SddmComponents
 import "./components"
 
 Rectangle {
-   id: root
+    id: root
 
-   TextConstants {
-      id: textConstants
-   }
+    TextConstants {
+        id: textConstants
+    }
 
-   Connections {
-      target: sddm
+    Connections {
+        target: sddm
 
-      onLoginSucceeded: {
-	 console.log("Login succeeded");
-      }
+        function onLoginSucceeded() {
+            console.log("Login succeeded");
+        }
 
-      onLoginFailed: {
-	 console.log("Login failed");
-      }
+        function onLoginFailed() {
+            console.log("Login failed");
+        }
 
-      onInformationMessage: {
-	 console.log("infomration message succeeded");
-      }
-   }
+        function onInformationMessage() {
+            console.log("infomration message succeeded");
+        }
+    }
 
-   AppStyle {
-      id:style
-   }
+    AppStyle {
+        id: style
+    }
 
-   signal tryLogin
+    signal tryLogin
 
-   onTryLogin: {
-      sddm.login(username.text, password.text, session.index);
-   }
+    onTryLogin: {
+        sddm.login(username.text, password.text, session.index);
+    }
 
-   Image {
-      id: background_img
-      source: "images/eclipse.jpg"
-      anchors.fill: parent
-   }
-   ShaderEffectSource {
-      id: background_blur
-      sourceItem: background_img
+    Image {
+        id: background_img
+        source: "images/eclipse.jpg"
+        anchors.fill: parent
+    }
+    ShaderEffectSource {
+        id: background_blur
+        sourceItem: background_img
 
-      height: parent.height
-      width: login_box.width + root.width * 0.08
+        height: parent.height
+        width: login_box.width + root.width * 0.08
 
-      anchors.verticalCenter: root.verticalCenter
-      anchors.horizontalCenter: login_box.horizontalCenter
-   }
-   GaussianBlur {
-      anchors.fill: background_blur
-      source: background_blur
-      radius: 10
-   }
-   Rectangle {
-      anchors.fill: background_blur
+        anchors.verticalCenter: root.verticalCenter
+        anchors.horizontalCenter: login_box.horizontalCenter
+    }
+    GaussianBlur {
+        anchors.fill: background_blur
+        source: background_blur
+        radius: 10
+    }
+    Rectangle {
+        anchors.fill: background_blur
 
-      gradient: Gradient {
-	 GradientStop {
-	    position: 0.0
-	    color: "#11000000"
-	 }
-	 GradientStop {
-	    position: 0.25
-	    color: "#44000000"
-	 }
-	 GradientStop {
-	    position: 0.25
-	    color: "#44000000"
-	 }
-	 GradientStop {
-	    position: 0.0
-	    color: "#11000000"
-	 }
-      }
-   }
+        gradient: Gradient {
+            GradientStop {
+                position: 0.0
+                color: "#11000000"
+            }
+            GradientStop {
+                position: 0.25
+                color: "#44000000"
+            }
+            GradientStop {
+                position: 0.25
+                color: "#44000000"
+            }
+            GradientStop {
+                position: 0.0
+                color: "#11000000"
+            }
+        }
+    }
 
-   // Date and time
-   Item {
-      width: time.paintedWidth
-      height: root.height * 0.23
+    // Power off hiberante suspend 
+    Item {
+       anchors.bottom:parent.bottom
+       anchors.left:parent.left
 
-      anchors.left: parent.left
-      anchors.top: parent.top
-      anchors.leftMargin: parent.width * 0.03
-      anchors.topMargin: parent.height * 0.05
+       height:parent.height*0.2
+       width:parent.width*0.3
 
-      Timer {
-	 id: timer
-	 interval: 1000
-	 running: true
-	 repeat: true
+       Button {
+	  text:"Shutdown"
+	  anchors.left: parent.left
 
-	 onTriggered: {
-	    date.text = Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy");
-	    time.text = Qt.formatDateTime(new Date(), "hh:mmAP");
-	 }
-      }
+	  width:parent.width*0.33
+	  height:parent.height
 
-      Text {
-	 id: date
-	 height: parent.height * 0.25
-	 text: Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy")
-	 font.pixelSize: parent.height * 0.22
-	 font.weight: 600
-	 color: style.primaryColor
+	  onClicked: {
+	     sddm.powerOff()
+	  }
+       }
+       Button {
+	  text:"Hibernate"
+	  anchors.horizontalCenter:parent.horizontalCenter
 
-	 anchors.horizontalCenter: parent.horizontalCenter
-      }
+	  width:parent.width*0.33
+	  height:parent.height
 
-      Text {
-	 id: time
-	 height: parent.height * 0.75
-	 text: Qt.formatDateTime(new Date(), "hh:mmap")
-	 font.pixelSize: parent.height * 0.6
-	 font.weight: 900
-	 color: style.primaryColor
+	  onClicked: {
+	     sddm.hibernate()
+	  }
+       }
+       Button {
+	  text:"Reboot"
+	  anchors.right: parent.right
 
-	 anchors.top: date.bottom
-	 anchors.left: parent.left
-      }
+	  width:parent.width*0.33
+	  height:parent.height
 
-      MultiEffect {
-	 source: date
-	 anchors.fill: date
-	 autoPaddingEnabled: true
-	 shadowBlur: 1
-	 shadowColor: "black"
-	 shadowEnabled: true
-      }
-      MultiEffect {
-	 source: time
-	 anchors.fill: time
-	 autoPaddingEnabled: true
-	 shadowBlur: 1
-	 shadowColor: "black"
-	 shadowEnabled: true
-      }
-   }
+	  onClicked: {
+	     sddm.reboot()
+	  }
+       }
+    }
 
-   Rectangle {
-      id: login_box
+    // Date and time
+    Item {
+        width: time.paintedWidth
+        height: root.height * 0.23
 
-      height: root.height / 2
-      width: root.width / 4
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: parent.width * 0.03
+        anchors.topMargin: parent.height * 0.05
 
-      anchors.right: root.right
-      anchors.rightMargin: root.width * 0.075
-      anchors.verticalCenter: root.verticalCenter
+        Timer {
+            id: timer
+            interval: 1000
+            running: true
+            repeat: true
 
-      radius: style.containerCornerRadius
+            onTriggered: {
+                date.text = Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy");
+                time.text = Qt.formatDateTime(new Date(), "hh:mmAP");
+            }
+        }
 
-      // Shadow around
-      MultiEffect {
-	 source: login_box
-	 anchors.fill: login_box
-	 autoPaddingEnabled: true
-	 shadowBlur: 0.4
-	 shadowColor: 'black'
-	 shadowEnabled: true
-	 // shadowVerticalOffset: 10
-      }
+        Text {
+            id: date
+            height: parent.height * 0.25
+            text: Qt.formatDateTime(new Date(), "ddd, dd MMM yyyy")
+            font.pixelSize: parent.height * 0.22
+            font.weight: 600
+            color: style.primaryColor
 
-      Column {
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
 
-	 anchors.centerIn: parent
+        Text {
+            id: time
+            height: parent.height * 0.75
+            text: Qt.formatDateTime(new Date(), "hh:mmap")
+            font.pixelSize: parent.height * 0.6
+            font.weight: 900
+            color: style.primaryColor
 
-	 height: parent.height * 0.7
-	 width: parent.width * 0.8
+            anchors.top: date.bottom
+            anchors.left: parent.left
+        }
 
-	 spacing: 10.0
+        MultiEffect {
+            source: date
+            anchors.fill: date
+            autoPaddingEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            shadowEnabled: true
+        }
+        MultiEffect {
+            source: time
+            anchors.fill: time
+            autoPaddingEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            shadowEnabled: true
+        }
+    }
 
-	 Text {
-	    text: "Login"
-	    font.pixelSize: parent.height * 0.1
-	    font.weight: 800
-	    anchors.horizontalCenter: parent.horizontalCenter
-	 }
+    Rectangle {
+        id: login_box
 
-	 InputField {
-	    width: parent.width * 0.8
-	    height:30
-	    anchors.horizontalCenter: parent.horizontalCenter
+        height: root.height / 2
+        width: root.width / 4
 
-	    placeholderText: "Username"
-	 }
+        anchors.right: root.right
+        anchors.rightMargin: root.width * 0.075
+        anchors.verticalCenter: root.verticalCenter
 
+        radius: style.containerCornerRadius
 
+        // Shadow around
+        MultiEffect {
+            source: login_box
+            anchors.fill: login_box
+            autoPaddingEnabled: true
+            shadowBlur: 0.4
+            shadowColor: 'black'
+            shadowEnabled: true
+            // shadowVerticalOffset: 10
+        }
 
-	 Rectangle {
+        Column {
 
-	    width: parent.width * 0.8
-	    height: 30
-	    radius: style.containerCornerRadius
+            anchors.centerIn: parent
 
-	    anchors.horizontalCenter: parent.horizontalCenter
+            height: parent.height * 0.7
+            width: parent.width * 0.8
 
-	    border.color: style.primaryColor
-	    border.pixelAligned: true
-	    border.width: 2.0
+            spacing: 10.0
 
-	    TextField {
-	       id: username
+            Text {
+                text: "Login"
+                font.pixelSize: parent.height * 0.1
+                font.weight: 800
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
 
-	       placeholderText: "Password"
+            InputField {
+                id: username
+                width: parent.width * 0.8
+                height: parent.height*0.1
+                anchors.horizontalCenter: parent.horizontalCenter
 
-	       width: parent.width
-	       height: parent.height
+                placeholderText: "Username"
 
-	       leftPadding: style.paddingMedium
-	       rightPadding: style.paddingMedium
+                KeyNavigation.tab: login
+                KeyNavigation.backtab: username
+                Keys.onPressed: function (event) {
+                    if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        root.tryLogin();
+                    }
+                }
+            }
 
-	       verticalAlignment: TextInput.AlignVCenter
-	       horizontalAlignment: TextInput.AlignHCenter
+            InputField {
+                id: password
 
-	       echoMode: TextField.Password
+                width: parent.width * 0.8
+                height: parent.height*0.1
+                anchors.horizontalCenter: parent.horizontalCenter
 
-	       KeyNavigation.tab: login
-	       KeyNavigation.backtab: username
-	       Keys.onPressed: function (event) {
-		  if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-		     root.tryLogin();
-		  }
-	       }
-	    }
-	 }
+                placeholderText: "Password"
 
-	 Rectangle {
+		isPassword:true
 
-	    width: parent.width * 0.8
-	    height: 30
-	    radius: style.containerCornerRadius
+                KeyNavigation.tab: login
+                KeyNavigation.backtab: username
+                Keys.onPressed: function (event) {
+                    if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        root.tryLogin();
+                    }
+                }
+            }
 
-	    anchors.horizontalCenter: parent.horizontalCenter
+            // Session Row
+            Row {
+                Text {
+                    text: textConstants.session
+                    verticalAlignment: Text.AlignVCenter
+                }
+                ComboBox {
+                    id: session
+                    model: sessionModel
+                    index: sessionModel.lastIndex
+                    height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
 
-	    border.color: style.primaryColor
-	    border.pixelAligned: true
-	    border.width: 2.0
+            // Keyboard Layout
+            Row {
+                Text {
+                    height: 80
+                    text: textConstants.layout
+                    verticalAlignment: Text.AlignVCenter
+                }
+                LayoutBox {
+                    id: keyboard_layout
 
-	    TextField {
-	       id: password
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
 
-	       placeholderText: "Password"
+            Button {
+                id: login
+                text: "Login"
+                anchors.horizontalCenter: parent.horizontalCenter
 
-	       width: parent.width
-	       height: parent.height
-
-	       leftPadding: style.paddingMedium
-	       rightPadding: style.paddingMedium
-
-	       verticalAlignment: TextInput.AlignVCenter
-	       horizontalAlignment: TextInput.AlignHCenter
-
-	       echoMode: TextField.Password
-
-	       KeyNavigation.tab: login
-	       KeyNavigation.backtab: username
-	       Keys.onPressed: function (event) {
-		  if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-		     root.tryLogin();
-		  }
-	       }
-	    }
-	 }
-
-	 // Session Row
-	 Row {
-	    Text {
-	       text: textConstants.session
-	       verticalAlignment: Text.AlignVCenter
-	    }
-	    ComboBox {
-	       id: session
-	       model: sessionModel
-	       index: sessionModel.lastIndex
-	       height: parent.height
-	       anchors.verticalCenter: parent.verticalCenter
-	    }
-	 }
-
-	 // Keyboard Layout
-	 Row {
-	    Text {
-	       height: 80
-	       text: textConstants.layout
-	       verticalAlignment: Text.AlignVCenter
-	    }
-	    LayoutBox {
-	       id: keyboard_layout
-
-	       anchors.verticalCenter: parent.verticalCenter
-	    }
-	 }
-
-	 Button {
-	    id: login
-	    text: "Login"
-	    anchors.horizontalCenter: parent.horizontalCenter
-
-	    onClicked: {
-	       root.tryLogin();
-	    }
-	 }
-      }
-   }
+                onClicked: {
+                    root.tryLogin();
+                }
+            }
+        }
+    }
 }
