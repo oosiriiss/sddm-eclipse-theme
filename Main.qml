@@ -289,73 +289,181 @@ Rectangle {
             height: parent.height * 0.8
             width: parent.width * 0.8
 
-            ListView {
-                id: userList
 
-                width: parent.width
-                height: parent.height*0.3
+	    Row {
+	       id: userList
+	       width: parent.width
+	       height: parent.height*0.3
 
-		orientation: Qt.Horizontal
-		focus:true
+	       clip:true
 
-		clip:true
+	       // Todo:: set selectedIndex to the index of LastUser
+	       property int selectedIndex: 0
+	       spacing:15
 
-                highlight: Rectangle {
-                    color: style.primaryColor
-                    radius: 10
-                }
+	       Repeater {
+		  model: userModel
 
-		model: userModel
-		currentIndex: userModel.lastIndex
+		  delegate: Item {
 
-		Component.onCompleted: {
-		   username.text = userList.currentItem.text
-		}
+		     height: Math.min((userList.width-2*userList.spacing)/3,userList.height)
+		     width: Math.min((userList.width-2*userList.spacing)/3,userList.height)
 
-		delegate: Item {
-		   id: listItem
+		     opacity: (index === userList.selectedIndex) ? 1 : 0.5
 
-		   width: Math.min(userList.width*0.35,userList.height)
-		   height: Math.min(userList.width*0.35,userList.height)
+		     scale: (index === userList.selectedIndex) ? 1 : 0.8
 
-		   property alias text: usrnm.text
+		     x: (index- userList.selectedIndex) * (width + userList.spacing) + userList.width/2 - width/2
 
-		   Column {
-		      anchors.centerIn:parent
-		      Image {
-			 width: listItem.width*0.6
-			 height: listItem.height*0.6
-			 source: icon
-			 fillMode:Image.PreserveAspectCrop
-			 anchors.horizontalCenter: parent.horizontalCenter
-		      }
-		      Text { 
-			 id:usrnm 
-			 text: name 
+		     Rectangle {
+			anchors.fill:parent
 
-			 width: listItem.width*0.9
-			 anchors.horizontalCenter: parent.horizontalCenter
+			radius:12
+			color: (index === userList.selectedIndex) ? style.primaryColor : style.secondaryColor
 
-			 horizontalAlignment: Text.AlignHCenter
+			Behavior on color { ColorAnimation { duration: 100; easing.type:Easing.InOutQuad } }
 
-			 font.pixelSize:listItem.height*0.17
-			 font.weight:500
-			 wrapMode: Text.Wrap
-		      }
-		     
-		   }
+		     }
 
-		   MouseArea {
-		      anchors.fill:parent
-		      onClicked: {
-			 userList.currentIndex = index
-			 userList.forceActiveFocus()
-			 // Setting 
-			 username.text = name
-		      }
-		   }
-                }
-            }
+
+		     Behavior on x { NumberAnimation { duration:200; easing.type: Easing.InOutQuad } }
+		     Behavior on y { NumberAnimation { duration:200; easing.type: Easing.InOutQuad } }
+		     Behavior on scale { NumberAnimation { duration:200; easing.type: Easing.InOutQuad} }
+
+		     Component.onCompleted: {
+			if(index === userList.selectedIndex)
+			   username.text = name
+		     }
+
+
+
+		     Column {
+			anchors.centerIn:parent
+
+			width: parent.width
+			height:parent.height
+
+			
+			padding: parent.width*0.1
+
+			Image {
+			   width: parent.width*0.6
+			   height: parent.height*0.6
+			   source: icon
+			   fillMode:Image.PreserveAspectCrop
+			   anchors.horizontalCenter: parent.horizontalCenter
+
+
+			   
+			}
+
+
+
+			Text { 
+			   id: nameText
+			   text: name 
+
+			   width: parent.width*0.9
+			   anchors.horizontalCenter: parent.horizontalCenter
+
+			   horizontalAlignment: Text.AlignHCenter
+
+			   font.pixelSize:parent.height*0.17
+			   font.weight:500
+			   wrapMode: Text.Wrap
+			}
+		     }
+
+		     MouseArea {
+			anchors.fill:parent
+			onClicked: {
+			   userList.selectedIndex = index
+			   username.text = name
+			   userList.forceActiveFocus()
+			}
+
+		     }
+
+		  }
+
+	       }
+
+
+
+
+
+
+	    }
+
+
+
+            //ListView {
+            //    id: userList
+
+            //    width: parent.width
+            //    height: parent.height*0.3
+
+	    //    orientation: Qt.Horizontal
+	    //    focus:true
+
+	    //    clip:true
+
+            //    highlight: Rectangle {
+            //        color: style.primaryColor
+            //        radius: 10
+            //    }
+
+	    //    model: userModel
+	    //    currentIndex: userModel.lastIndex
+
+	    //    Component.onCompleted: {
+	    //       username.text = userList.currentItem.text
+	    //    }
+
+	    //    delegate: Item {
+	    //       id: listItem
+
+	    //       width: Math.min(userList.width*0.35,userList.height)
+	    //       height: Math.min(userList.width*0.35,userList.height)
+
+	    //       property alias text: usrnm.text
+
+	    //       Column {
+	    //          anchors.centerIn:parent
+	    //          Image {
+	    //    	 width: listItem.width*0.6
+	    //    	 height: listItem.height*0.6
+	    //    	 source: icon
+	    //    	 fillMode:Image.PreserveAspectCrop
+	    //    	 anchors.horizontalCenter: parent.horizontalCenter
+	    //          }
+	    //          Text { 
+	    //    	 id:usrnm 
+	    //    	 text: name 
+
+	    //    	 width: listItem.width*0.9
+	    //    	 anchors.horizontalCenter: parent.horizontalCenter
+
+	    //    	 horizontalAlignment: Text.AlignHCenter
+
+	    //    	 font.pixelSize:listItem.height*0.17
+	    //    	 font.weight:500
+	    //    	 wrapMode: Text.Wrap
+	    //          }
+	    //         
+	    //       }
+
+	    //       MouseArea {
+	    //          anchors.fill:parent
+	    //          onClicked: {
+	    //    	 userList.currentIndex = index
+	    //    	 userList.forceActiveFocus()
+	    //    	 // Setting 
+	    //    	 username.text = name
+	    //          }
+	    //       }
+            //    }
+            //}
 
             Item {
                 width: 1
