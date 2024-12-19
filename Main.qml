@@ -74,22 +74,22 @@ Rectangle {
     Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-	anchors.leftMargin: parent.width*0.01
-	anchors.bottomMargin: parent.height*0.01
+        anchors.leftMargin: parent.width * 0.01
+        anchors.bottomMargin: parent.height * 0.01
 
         height: parent.height * 0.07
         width: parent.width * 0.15
 
         Button {
-	   id:poweroff
-	   background: Rectangle {
-	      color:"transparent"
-	   }
-	    icon.name:"power-off"
+            id: poweroff
+            background: Rectangle {
+                color: "transparent"
+            }
+            icon.name: "power-off"
             icon.source: "images/poweroff.svg"
-	    icon.width:width
-	    icon.height:height
-	    icon.color:style.secondaryColor
+            icon.width: width
+            icon.height: height
+            icon.color: style.secondaryColor
             anchors.left: parent.left
             width: parent.width * 0.33
             height: parent.height
@@ -99,15 +99,15 @@ Rectangle {
             }
         }
         Button {
-	   id:hibernate
-	   background: Rectangle {
-	      color:"transparent"
-	   }
-	    icon.name:"hibernate"
+            id: hibernate
+            background: Rectangle {
+                color: "transparent"
+            }
+            icon.name: "hibernate"
             icon.source: "images/hibernate.svg"
-	    icon.width:width
-	    icon.height:height
-	    icon.color:style.secondaryColor
+            icon.width: width
+            icon.height: height
+            icon.color: style.secondaryColor
 
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -119,15 +119,15 @@ Rectangle {
             }
         }
         Button {
-	   id:reboot
-	    background: Rectangle {
-	       color:"transparent"
-	    }
-	    icon.name:"reboot"
+            id: reboot
+            background: Rectangle {
+                color: "transparent"
+            }
+            icon.name: "reboot"
             icon.source: "images/reboot.svg"
-	    icon.width:width
-	    icon.height:height
-	    icon.color:style.secondaryColor
+            icon.width: width
+            icon.height: height
+            icon.color: style.secondaryColor
 
             anchors.right: parent.right
 
@@ -139,34 +139,30 @@ Rectangle {
             }
         }
 
-	MultiEffect {
-	   shadowEnabled:true
-	   shadowBlur:1
-	   shadowColor:"black"
-	   autoPaddingEnabled:true
-	   source:poweroff
-	   anchors.fill:poweroff 
-	}
-	MultiEffect {
-	   shadowEnabled:true
-	   shadowBlur:1
-	   shadowColor:"black"
-	   autoPaddingEnabled:true
-	   source:hibernate
-	   anchors.fill:hibernate 
-	}
-	MultiEffect {
-	   shadowEnabled:true
-	   shadowBlur:1
-	   shadowColor:"black"
-	   autoPaddingEnabled:true
-	   source:reboot
-	   anchors.fill:reboot
-	}
-
-
-
-
+        MultiEffect {
+            shadowEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            autoPaddingEnabled: true
+            source: poweroff
+            anchors.fill: poweroff
+        }
+        MultiEffect {
+            shadowEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            autoPaddingEnabled: true
+            source: hibernate
+            anchors.fill: hibernate
+        }
+        MultiEffect {
+            shadowEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            autoPaddingEnabled: true
+            source: reboot
+            anchors.fill: reboot
+        }
     }
 
     // Date and time
@@ -232,53 +228,49 @@ Rectangle {
         }
     }
 
-
-
     // session and keyboard
-    Row {
-       width:login_box.width
+    Item {
+        width: login_box.width
 
-       anchors.top: parent.top
-       anchors.topMargin: 20
-       anchors.horizontalCenter:login_box.horizontalCenter
-       Text {
-	  id:session_label
-	  text: textConstants.session
-	  verticalAlignment: Text.AlignVCenter
-	  anchors.verticalCenter:parent.verticalCenter
-       }
-       SDDM.ComboBox {
-	  id: session
-	  model: sessionModel
-	  index: sessionModel.lastIndex
-	  anchors.verticalCenter: parent.verticalCenter
-	  anchors.left:session_label.right
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        anchors.horizontalCenter: login_box.horizontalCenter
+        Text {
+            id: session_label
+            text: textConstants.session
+            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        SDDM.ComboBox {
+            id: session
+            model: sessionModel
+            index: sessionModel.lastIndex
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: session_label.right
 
-	  color:style.secondaryColor
-	  arrowColor:"black"
-	  focusColor: style.black
-	  hoverColor:style.primaryColor
-	  menuColor:style.secondaryColor
-	  textColor:"black"
-       }
+            color: style.secondaryColor
+            arrowColor: "black"
+            focusColor: "black"
+            hoverColor: style.primaryColor
+            menuColor: style.secondaryColor
+            textColor: "black"
+        }
 
-       //Keyboard Layout
-       Text {
-	  id:layout_label
-	  text: textConstants.layout
-	  verticalAlignment: Text.AlignVCenter
+        //Keyboard Layout
+        Text {
+            id: layout_label
+            text: textConstants.layout
+            verticalAlignment: Text.AlignVCenter
 
-	  anchors.verticalCenter:parent.verticalCenter
-	  anchors.right:keyboard_layout.left
-       }
-       SDDM.LayoutBox {
-	  id: keyboard_layout
-	  anchors.verticalCenter: parent.verticalCenter
-	  anchors.right:parent.right
-       }
-
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: keyboard_layout.left
+        }
+        SDDM.LayoutBox {
+            id: keyboard_layout
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+        }
     }
-
 
     Item {
         id: login_box
@@ -290,8 +282,6 @@ Rectangle {
         anchors.rightMargin: root.width * 0.075
         anchors.verticalCenter: root.verticalCenter
 
-
-
         Column {
 
             anchors.centerIn: parent
@@ -299,36 +289,89 @@ Rectangle {
             height: parent.height * 0.8
             width: parent.width * 0.8
 
+            ListView {
+                id: userList
 
-	    Item {
-	       width:1
-	       height:parent.height*0.1
-	    }
+                width: parent.width
+                height: parent.height*0.3
 
-	    InputField {
-	       id: username
-	       width: parent.width 
-	       height: parent.height * 0.15
-	       anchors.horizontalCenter: parent.horizontalCenter
+		orientation: Qt.Horizontal
+		focus:true
 
-	       label:textConstants.userName
-	       placeholderText: textConstants.promptUser
+		clip:true
 
-	       KeyNavigation.tab: password
-	       KeyNavigation.backtab: keyboard_layout
-	       Keys.onPressed: function (event) {
-		  if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-		     root.tryLogin();
-		  }
-	       }
-	    }
+                highlight: Rectangle {
+                    color: "lightsteelblue"
+                    radius: 10
+                }
 
-	    // Spacer
-	    Item {
-	       height:parent.height*0.08
-	       width:1
-	    }
-	    
+		model: userModel
+		currentIndex: userModel.lastIndex
+
+		delegate: Item {
+		   id: listItem
+
+		   width: Math.min(userList.width*0.35,userList.height)
+		   height: Math.min(userList.width*0.35,userList.height)
+
+		   Column {
+		      anchors.centerIn:parent
+		      Image {
+			 width: listItem.width*0.6
+			 height: listItem.height*0.6
+			 source: icon
+			 fillMode:Image.preserverAspectCrop
+		      }
+		      Text { text: name }
+		      Text { text: realName }
+		      Text { text: homeDir }
+		   }
+
+		   MouseArea {
+		      anchors.fill:parent
+		      onClicked: {
+			 userList.currentIndex = index
+		      }
+		   }
+                }
+
+		onCurrentItemChanged: {
+		   var item = userModel.get(userList.currentIndex)
+		   console.log("Item changed: " + item)
+		}
+
+
+            }
+
+            Item {
+                width: 1
+                height: parent.height * 0.1
+            }
+
+            InputField {
+                id: username
+                width: parent.width
+                height: parent.height * 0.15
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                label: textConstants.userName
+                placeholderText: textConstants.promptUser
+
+                KeyNavigation.tab: password
+                KeyNavigation.backtab: keyboard_layout
+                Keys.onPressed: function (event) {
+                    if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        root.tryLogin();
+                    }
+                }
+            }
+
+            // Spacer
+            Item {
+                height: parent.height * 0.08
+                width: 1
+            }
+
             InputField {
                 id: password
 
@@ -337,7 +380,7 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 placeholderText: textConstants.promptPassword
-		label: textConstants.password
+                label: textConstants.password
 
                 isPassword: true
 
@@ -350,31 +393,30 @@ Rectangle {
                 }
             }
 
-	    Item {
-	       height:parent.height*0.15
-	       width:1
-	    }
+            Item {
+                height: parent.height * 0.15
+                width: 1
+            }
 
             Button {
                 id: login
                 text: textConstants.login
                 anchors.horizontalCenter: parent.horizontalCenter
 
-		width:parent.width*0.4
-		height:parent.height*0.1
+                width: parent.width * 0.4
+                height: parent.height * 0.1
 
-		font.pixelSize: parent.height*0.05
-		font.weight:700
+                font.pixelSize: parent.height * 0.05
+                font.weight: 700
 
                 onClicked: {
                     root.tryLogin();
                 }
 
-		background: Rectangle {
-		   radius:10
-		   color:style.secondaryColor
-
-		}
+                background: Rectangle {
+                    radius: 10
+                    color: style.secondaryColor
+                }
             }
         }
     }

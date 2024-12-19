@@ -38,6 +38,10 @@ Item {
 
         color: "transparent"
 
+
+	Behavior on border.width { SmoothedAnimation { velocity:200 } }
+
+
         Text {
             text: root.placeholderText
             visible: !root.text && !textInput.activeFocus
@@ -92,29 +96,19 @@ Item {
                 Transition {
                     from: "unfocused"
                     to: "focused"
-                    NumberAnimation {
-                        property: "bg.border.width"
-                        duration: 100
-                        easing.type: Easing.InBounce
-                    }
                     ColorAnimation {
                         properties: "bg.border.color; textLabel.color"
-                        duration: 200
-                        easing.type: Easing.InBounce
+                        duration: 100
+                        easing.type: Easing.InOutQuad
                     }
                 },
                 Transition {
                     from: "focused"
                     to: "unfocused"
-                    NumberAnimation {
-                        property: "bg.border.width"
-                        duration: 100
-                        easing.type: Easing.OutBounce
-                    }
                     ColorAnimation {
                         properties: "bg.border.color; textLabel.color"
-                        duration: 200
-                        easing.type: Easing.OutBounce
+                        duration: 50
+                        easing.type: Easing.InOutQuad
                     }
                 }
             ]
