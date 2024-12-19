@@ -201,7 +201,7 @@ Rectangle {
         Text {
             id: time
             height: parent.height * 0.75
-            text: Qt.formatDateTime(new Date(), "hh:mmap")
+            text: Qt.formatDateTime(new Date(), "hh:mmAP")
             font.pixelSize: parent.height * 0.6
             font.weight: 900
             color: style.primaryColor
@@ -301,12 +301,16 @@ Rectangle {
 		clip:true
 
                 highlight: Rectangle {
-                    color: "lightsteelblue"
+                    color: style.primaryColor
                     radius: 10
                 }
 
 		model: userModel
 		currentIndex: userModel.lastIndex
+
+		Component.onCompleted: {
+		   username.text = userList.currentItem.text
+		}
 
 		delegate: Item {
 		   id: listItem
@@ -314,33 +318,43 @@ Rectangle {
 		   width: Math.min(userList.width*0.35,userList.height)
 		   height: Math.min(userList.width*0.35,userList.height)
 
+		   property alias text: usrnm.text
+
 		   Column {
 		      anchors.centerIn:parent
 		      Image {
 			 width: listItem.width*0.6
 			 height: listItem.height*0.6
 			 source: icon
-			 fillMode:Image.preserverAspectCrop
+			 fillMode:Image.PreserveAspectCrop
+			 anchors.horizontalCenter: parent.horizontalCenter
 		      }
-		      Text { text: name }
-		      Text { text: realName }
-		      Text { text: homeDir }
+		      Text { 
+			 id:usrnm 
+			 text: name 
+
+			 width: listItem.width*0.9
+			 anchors.horizontalCenter: parent.horizontalCenter
+
+			 horizontalAlignment: Text.AlignHCenter
+
+			 font.pixelSize:listItem.height*0.17
+			 font.weight:500
+			 wrapMode: Text.Wrap
+		      }
+		     
 		   }
 
 		   MouseArea {
 		      anchors.fill:parent
 		      onClicked: {
 			 userList.currentIndex = index
+			 userList.forceActiveFocus()
+			 // Setting 
+			 username.text = name
 		      }
 		   }
                 }
-
-		onCurrentItemChanged: {
-		   var item = userModel.get(userList.currentIndex)
-		   console.log("Item changed: " + item)
-		}
-
-
             }
 
             Item {
@@ -350,8 +364,11 @@ Rectangle {
 
             InputField {
                 id: username
+
+
                 width: parent.width
                 height: parent.height * 0.15
+
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 label: textConstants.userName
@@ -374,6 +391,7 @@ Rectangle {
 
             InputField {
                 id: password
+
 
                 width: parent.width
                 height: parent.height * 0.15
@@ -400,22 +418,23 @@ Rectangle {
 
             Button {
                 id: login
-                text: textConstants.login
-                anchors.horizontalCenter: parent.horizontalCenter
+
+		text: textConstants.login
+
+		font.pixelSize: parent.height * 0.05
+		font.weight: 700
 
                 width: parent.width * 0.4
                 height: parent.height * 0.1
 
-                font.pixelSize: parent.height * 0.05
-                font.weight: 700
-
+		anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: {
                     root.tryLogin();
                 }
 
                 background: Rectangle {
                     radius: 10
-                    color: style.secondaryColor
+                    color: login.hovered ? style.primaryColor :  style.secondaryColor
                 }
             }
         }
