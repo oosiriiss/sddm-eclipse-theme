@@ -1,17 +1,19 @@
 [SddmGreeterTheme]
-Name=Maldives
-Description=Maldives Theme
-Author=Abdurrahman AVCI
-Copyright=(c) 2013, Abdurrahman AVCI
+Name=eclipse
+Description=Eclipse theme
+Author=Bartosz Skorowski, https://github.com/oosiriiss
+Copyright=(c) 2024, oosiriiss
 License=CC-BY-SA
 Type=sddm-theme
 Version=0.1
 QtVersion=6
 Website=https://github.com/sddm/sddm
-Screenshot=maldives.jpg
+# Screenshot=maldives.jpg
 MainScript=Main.qml
 ConfigFile=theme.conf
 TranslationsDirectory=translations
-Email=abdurrahmanavci@gmail.com
-Theme-Id=maldives
+Email=oosiriiss@gmail.com
+Theme-Id=eclipse
 Theme-API=2.0
+
+
