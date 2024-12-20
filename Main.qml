@@ -241,24 +241,41 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
             anchors.verticalCenter: parent.verticalCenter
         }
-        SDDM.ComboBox {
-            id: session
-            model: sessionModel
-            index: sessionModel.lastIndex
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: session_label.right
 
-	    //arrowColor: "transparent"
+	ComboBox {
+	   id: sessionComboBox
 
-	    arrowIcon: Qt.resolvedPath(session.activeFocus ? "images/expand_menu.svg" : "images/shrink_menu.svg")
+	   model: sessionModel
+	   currentIndex:sessionModel.lastIndex
+	   textRole: "name" 
+
+	   width: 200
+	   anchors.verticalCenter:parent.verticalCenter
+	   anchors.left:session_label.right
+
+	   onCurrentIndexChanged: {
+	      console.log("Selected color value:", sessionComboBox.valueAt(sessionComboBox.currentIndex).name)
+	   }
+
+	   Behavior on height { NumberAnimation { duration:200 } }
+	}
 
 
-            color: style.secondaryColor
-            focusColor: "white"
-            hoverColor: style.primaryColor
-            menuColor: style.secondaryColor
-            textColor: "white"
-        }
+        //ComboBox {
+        //    id: session
+        //    model: sessionModel
+	//    currentIndex: sessionModel.lastIndex
+        //    anchors.verticalCenter: parent.verticalCenter
+        //    anchors.left: session_label.right
+
+	//    //arrowColor: "transparent"
+
+        //    //color: style.secondaryColor
+        //    //focusColor: "white"
+        //    //hoverColor: style.primaryColor
+        //    //menuColor: style.secondaryColor
+        //    //textColor: "white"
+        //}
 
         //Keyboard Layout
         Text {
