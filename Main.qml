@@ -242,7 +242,8 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-	ComboBox {
+
+	DropDownMenu {
 	   id: sessionComboBox
 
 	   model: sessionModel
@@ -253,13 +254,12 @@ Rectangle {
 	   anchors.verticalCenter:parent.verticalCenter
 	   anchors.left:session_label.right
 
+	    
 	   onCurrentIndexChanged: {
 	      console.log("Selected color value:", sessionComboBox.valueAt(sessionComboBox.currentIndex).name)
 	   }
 
-	   Behavior on height { NumberAnimation { duration:200 } }
 	}
-
 
         //ComboBox {
         //    id: session
