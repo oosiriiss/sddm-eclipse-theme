@@ -231,18 +231,17 @@ Rectangle {
     // session and keyboard
     Item {
         width: login_box.width
-
         anchors.top: parent.top
         anchors.topMargin: 20
         anchors.horizontalCenter: login_box.horizontalCenter
+
         Text {
             id: session_label
             text: textConstants.session
             verticalAlignment: Text.AlignVCenter
             anchors.verticalCenter: parent.verticalCenter
+	    font.pixelSize: parent.height
         }
-
-
 	DropDownMenu {
 	   id: sessionComboBox
 
@@ -250,33 +249,11 @@ Rectangle {
 	   currentIndex:sessionModel.lastIndex
 	   textRole: "name" 
 
-	   width: 200
+	   width:parent.width*0.3
 	   anchors.verticalCenter:parent.verticalCenter
 	   anchors.left:session_label.right
 
-	    
-	   onCurrentIndexChanged: {
-	      console.log("Selected color value:", sessionComboBox.valueAt(sessionComboBox.currentIndex).name)
-	   }
-
 	}
-
-        //ComboBox {
-        //    id: session
-        //    model: sessionModel
-	//    currentIndex: sessionModel.lastIndex
-        //    anchors.verticalCenter: parent.verticalCenter
-        //    anchors.left: session_label.right
-
-	//    //arrowColor: "transparent"
-
-        //    //color: style.secondaryColor
-        //    //focusColor: "white"
-        //    //hoverColor: style.primaryColor
-        //    //menuColor: style.secondaryColor
-        //    //textColor: "white"
-        //}
-
         //Keyboard Layout
         Text {
             id: layout_label
@@ -285,12 +262,25 @@ Rectangle {
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: keyboard_layout.left
+	    font.pixelSize: parent.height
         }
         SDDM.LayoutBox {
             id: keyboard_layout
+	   width:parent.width*0.3
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
         }
+	//DropDownMenu {
+        //    id: keyboard_layout
+
+	//    model:keyboard.layouts
+	//    currentIndex: keyboard.currentLayout
+
+	//    width:parent.width*0.3
+        //    anchors.verticalCenter: parent.verticalCenter
+        //    anchors.right: parent.right
+
+	//}
     }
 
     Item {

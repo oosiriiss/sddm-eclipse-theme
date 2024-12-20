@@ -2,33 +2,40 @@ import QtQuick
 import QtQuick.Controls
 
 ComboBox {
-    id: sessionComboBox
+    id: comboBox
 
-    //model: sessionModel
-    //currentIndex:sessionModel.lastIndex
-    textRole: "name"
+    property real cornerRadius: 5
 
-    contentItem: Rectangle { color:"lightgray" }
+    AppStyle {
+        id: style
+    }
 
-    popup: Popup {
-        background: Rectangle {
-            color: "black"
-            width: sessionComboBox.width
-            height: sessionComboBox.height
-        }
+    //contentItem: Rectangle {
+    //    text: comboBox.model.valueAt(comboBox.currentIndex).
+    //}
+
+    popup.y: comboBox.height
+    popup.background: Rectangle {
+        radius: 5
     }
 
     delegate: ItemDelegate {
+        id: item
 
-        width: sessionComboBox.width
+        width: comboBox.width
+        height: comboBox.height
 
         background: Rectangle {
-            width: sessionComboBox.width
-            radius: 5
-            color: "red"
+            width: parent.width
+            height: parent.height
+
+            radius: comboBox.cornerRadius
+
+            color: item.hovered ? style.primaryColor : "white"
         }
 
         Text {
+            anchors.centerIn: parent
             text: name
         }
     }
@@ -40,6 +47,6 @@ ComboBox {
     }
 
     onCurrentIndexChanged: {
-        console.log("Selected color value:", sessionComboBox.valueAt(sessionComboBox.currentIndex).name);
+        console.log("Selected color value:", comboBox.valueAt(comboBox.currentIndex).name);
     }
 }
