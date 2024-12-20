@@ -248,12 +248,16 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: session_label.right
 
+	    //arrowColor: "transparent"
+
+	    arrowIcon: Qt.resolvedPath(session.activeFocus ? "images/expand_menu.svg" : "images/shrink_menu.svg")
+
+
             color: style.secondaryColor
-            arrowColor: "black"
-            focusColor: "black"
+            focusColor: "white"
             hoverColor: style.primaryColor
             menuColor: style.secondaryColor
-            textColor: "black"
+            textColor: "white"
         }
 
         //Keyboard Layout

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none">
+ 
+   <path id="lineAB" d="M 12 42 34 20 0" stroke="black" stroke-width="6"/>
+    <path id="lineAB" d="M 52 42 30 20 0" stroke="black" stroke-width="6"/>
+
+</svg>
