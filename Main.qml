@@ -82,63 +82,82 @@ Rectangle {
 
         Button {
             id: poweroff
-            background: Rectangle {
-                color: "transparent"
-            }
+
             icon.name: "power-off"
             icon.source: "images/poweroff.svg"
             icon.width: width
             icon.height: height
-            icon.color: style.secondaryColor
-            anchors.left: parent.left
+            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+
             width: parent.width * 0.33
             height: parent.height
 
+            anchors.left: parent.left
+
+	    KeyNavigation.tab: hibernate
+	    KeyNavigation.backtab: login
+
+	    Behavior on icon.color { ColorAnimation { duration:100 } }
+
+            background: Rectangle {
+                color: "transparent"
+            }
             onClicked: {
                 sddm.powerOff();
             }
         }
         Button {
             id: hibernate
-            background: Rectangle {
-                color: "transparent"
-            }
+
             icon.name: "hibernate"
             icon.source: "images/hibernate.svg"
             icon.width: width
             icon.height: height
-            icon.color: style.secondaryColor
-
-            anchors.horizontalCenter: parent.horizontalCenter
+            icon.color: (focus) ? style.primaryColor : style.secondaryColor
 
             width: parent.width * 0.33
             height: parent.height
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+	    KeyNavigation.tab: reboot
+	    KeyNavigation.backtab: poweroff
+
+	    Behavior on icon.color { ColorAnimation { duration:100 } }
 
             onClicked: {
                 sddm.hibernate();
             }
-        }
-        Button {
-            id: reboot
             background: Rectangle {
                 color: "transparent"
             }
+        }
+        Button {
+            id: reboot
+
             icon.name: "reboot"
             icon.source: "images/reboot.svg"
             icon.width: width
             icon.height: height
-            icon.color: style.secondaryColor
-
-            anchors.right: parent.right
+            icon.color: (focus) ? style.primaryColor : style.secondaryColor
 
             width: parent.width * 0.33
             height: parent.height
 
+            anchors.right: parent.right
+
+	    KeyNavigation.tab: sessionComboBox
+	    KeyNavigation.backtab: hibernate
+
+	    Behavior on icon.color { ColorAnimation { duration:100 } }
+
             onClicked: {
                 sddm.reboot();
             }
+            background: Rectangle {
+                color: "transparent"
+            }
         }
-
         MultiEffect {
             shadowEnabled: true
             shadowBlur: 1
@@ -274,19 +293,9 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
 
-            KeyNavigation.tab: username
+            KeyNavigation.tab: userList 
             KeyNavigation.backtab: sessionComboBox
         }
-
-        //DropDownMenu {
-        //    id: keyboard_layout
-        //    model:keyboard.layouts
-        //    currentIndex: keyboard.currentLayout
-        //    width:parent.width*0.3
-        //    anchors.verticalCenter: parent.verticalCenter
-        //    anchors.right: parent.right
-
-        //}
     }
 
     Item {
@@ -306,111 +315,18 @@ Rectangle {
             height: parent.height * 0.8
             width: parent.width * 0.8
 
-            Row {
-                id: userList
-                width: parent.width
-                height: parent.height * 0.3
 
-                clip: true
 
-                // Todo:: set selectedIndex to the index of LastUser
-                property int selectedIndex: 0
-                spacing: 15
 
-                Repeater {
-                    model: userModel
+	    UserList {
+	       id:userList
 
-                    delegate: Item {
+	       width:parent.width
+	       height:parent.height*0.3
 
-                        height: Math.min((userList.width - 2 * userList.spacing) / 3, userList.height)
-                        width: Math.min((userList.width - 2 * userList.spacing) / 3, userList.height)
-
-                        opacity: (index === userList.selectedIndex) ? 1 : 0.5
-
-                        scale: (index === userList.selectedIndex) ? 1 : 0.8
-
-                        x: (index - userList.selectedIndex) * (width + userList.spacing) + userList.width / 2 - width / 2
-
-                        Rectangle {
-                            anchors.fill: parent
-
-                            radius: 12
-                            color: (index === userList.selectedIndex) ? style.primaryColor : style.secondaryColor
-
-                            Behavior on color {
-                                ColorAnimation {
-                                    duration: 100
-                                    easing.type: Easing.InOutQuad
-                                }
-                            }
-                        }
-
-                        Behavior on x {
-                            NumberAnimation {
-                                duration: 200
-                                easing.type: Easing.InOutQuad
-                            }
-                        }
-                        Behavior on y {
-                            NumberAnimation {
-                                duration: 200
-                                easing.type: Easing.InOutQuad
-                            }
-                        }
-                        Behavior on scale {
-                            NumberAnimation {
-                                duration: 200
-                                easing.type: Easing.InOutQuad
-                            }
-                        }
-
-                        Component.onCompleted: {
-                            if (index === userList.selectedIndex)
-                                username.text = name;
-                        }
-
-                        Column {
-                            anchors.centerIn: parent
-
-                            width: parent.width
-                            height: parent.height
-
-                            padding: parent.width * 0.1
-
-                            Image {
-                                width: parent.width * 0.6
-                                height: parent.height * 0.6
-                                source: icon
-                                fillMode: Image.PreserveAspectCrop
-                                anchors.horizontalCenter: parent.horizontalCenter
-                            }
-
-                            Text {
-                                id: nameText
-                                text: name
-
-                                width: parent.width * 0.9
-                                anchors.horizontalCenter: parent.horizontalCenter
-
-                                horizontalAlignment: Text.AlignHCenter
-
-                                font.pixelSize: parent.height * 0.17
-                                font.weight: 500
-                                wrapMode: Text.Wrap
-                            }
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                userList.selectedIndex = index;
-                                username.text = name;
-                                userList.forceActiveFocus();
-                            }
-                        }
-                    }
-                }
-            }
+	       KeyNavigation.tab: username
+	       KeyNavigation.backtab: keyboard_layout
+	    }
 
             Item {
                 width: 1
@@ -489,7 +405,7 @@ Rectangle {
 
                 background: Rectangle {
                     radius: 10
-                    color: login.hovered ? style.primaryColor : style.secondaryColor
+                    color: (login.hovered || login.focus) ? style.primaryColor : style.secondaryColor
                 }
             }
         }

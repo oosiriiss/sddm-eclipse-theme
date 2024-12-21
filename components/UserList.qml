@@ -1,5 +1,4 @@
 import QtQuick
-import SddmComponents
 
 Row {
     id: userList
@@ -10,12 +9,12 @@ Row {
     property int selectedIndex: 0
     spacing: 15
 
-    Keys.onPressed: function(event) {
-       if(event.key == Qt.Key_Left && selectedIndex !== 0) {
-	  selectedIndex= selectedIndex - 1;
-       } else if(event.key == Qt.Key_Right && selectedIndex< userModel.count - 1) {
-	  selectedIndex = selectedIndex + 1;
-       }
+    Keys.onPressed: function (event) {
+        if (event.key == Qt.Key_Left && selectedIndex !== 0) {
+            selectedIndex = selectedIndex - 1;
+        } else if (event.key == Qt.Key_Right && selectedIndex < userModel.count - 1) {
+            selectedIndex = selectedIndex + 1;
+        }
     }
 
     Repeater {
