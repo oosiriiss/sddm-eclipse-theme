@@ -240,20 +240,23 @@ Rectangle {
             text: textConstants.session
             verticalAlignment: Text.AlignVCenter
             anchors.verticalCenter: parent.verticalCenter
-	    font.pixelSize: parent.height
+            font.pixelSize: parent.height
         }
-	DropDownMenu {
-	   id: sessionComboBox
+        DropDownMenu {
+            id: sessionComboBox
 
-	   model: sessionModel
-	   currentIndex:sessionModel.lastIndex
-	   textRole: "name" 
+            model: sessionModel
+            currentIndex: sessionModel.lastIndex
+            textRole: "name"
 
-	   width:parent.width*0.3
-	   anchors.verticalCenter:parent.verticalCenter
-	   anchors.left:session_label.right
+            width: parent.width * 0.3
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: session_label.right
 
-	}
+            KeyNavigation.tab: keyboard_layout
+            KeyNavigation.backtab: login
+        }
+
         //Keyboard Layout
         Text {
             id: layout_label
@@ -262,25 +265,28 @@ Rectangle {
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: keyboard_layout.left
-	    font.pixelSize: parent.height
+            font.pixelSize: parent.height
         }
+
         SDDM.LayoutBox {
             id: keyboard_layout
-	   width:parent.width*0.3
+            width: parent.width * 0.3
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
+
+            KeyNavigation.tab: username
+            KeyNavigation.backtab: sessionComboBox
         }
-	//DropDownMenu {
+
+        //DropDownMenu {
         //    id: keyboard_layout
-
-	//    model:keyboard.layouts
-	//    currentIndex: keyboard.currentLayout
-
-	//    width:parent.width*0.3
+        //    model:keyboard.layouts
+        //    currentIndex: keyboard.currentLayout
+        //    width:parent.width*0.3
         //    anchors.verticalCenter: parent.verticalCenter
         //    anchors.right: parent.right
 
-	//}
+        //}
     }
 
     Item {
@@ -300,181 +306,111 @@ Rectangle {
             height: parent.height * 0.8
             width: parent.width * 0.8
 
+            Row {
+                id: userList
+                width: parent.width
+                height: parent.height * 0.3
 
-	    Row {
-	       id: userList
-	       width: parent.width
-	       height: parent.height*0.3
+                clip: true
 
-	       clip:true
+                // Todo:: set selectedIndex to the index of LastUser
+                property int selectedIndex: 0
+                spacing: 15
 
-	       // Todo:: set selectedIndex to the index of LastUser
-	       property int selectedIndex: 0
-	       spacing:15
+                Repeater {
+                    model: userModel
 
-	       Repeater {
-		  model: userModel
+                    delegate: Item {
 
-		  delegate: Item {
+                        height: Math.min((userList.width - 2 * userList.spacing) / 3, userList.height)
+                        width: Math.min((userList.width - 2 * userList.spacing) / 3, userList.height)
 
-		     height: Math.min((userList.width-2*userList.spacing)/3,userList.height)
-		     width: Math.min((userList.width-2*userList.spacing)/3,userList.height)
+                        opacity: (index === userList.selectedIndex) ? 1 : 0.5
 
-		     opacity: (index === userList.selectedIndex) ? 1 : 0.5
+                        scale: (index === userList.selectedIndex) ? 1 : 0.8
 
-		     scale: (index === userList.selectedIndex) ? 1 : 0.8
+                        x: (index - userList.selectedIndex) * (width + userList.spacing) + userList.width / 2 - width / 2
 
-		     x: (index- userList.selectedIndex) * (width + userList.spacing) + userList.width/2 - width/2
+                        Rectangle {
+                            anchors.fill: parent
 
-		     Rectangle {
-			anchors.fill:parent
+                            radius: 12
+                            color: (index === userList.selectedIndex) ? style.primaryColor : style.secondaryColor
 
-			radius:12
-			color: (index === userList.selectedIndex) ? style.primaryColor : style.secondaryColor
+                            Behavior on color {
+                                ColorAnimation {
+                                    duration: 100
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
+                        }
 
-			Behavior on color { ColorAnimation { duration: 100; easing.type:Easing.InOutQuad } }
+                        Behavior on x {
+                            NumberAnimation {
+                                duration: 200
+                                easing.type: Easing.InOutQuad
+                            }
+                        }
+                        Behavior on y {
+                            NumberAnimation {
+                                duration: 200
+                                easing.type: Easing.InOutQuad
+                            }
+                        }
+                        Behavior on scale {
+                            NumberAnimation {
+                                duration: 200
+                                easing.type: Easing.InOutQuad
+                            }
+                        }
 
-		     }
+                        Component.onCompleted: {
+                            if (index === userList.selectedIndex)
+                                username.text = name;
+                        }
 
+                        Column {
+                            anchors.centerIn: parent
 
-		     Behavior on x { NumberAnimation { duration:200; easing.type: Easing.InOutQuad } }
-		     Behavior on y { NumberAnimation { duration:200; easing.type: Easing.InOutQuad } }
-		     Behavior on scale { NumberAnimation { duration:200; easing.type: Easing.InOutQuad} }
+                            width: parent.width
+                            height: parent.height
 
-		     Component.onCompleted: {
-			if(index === userList.selectedIndex)
-			   username.text = name
-		     }
+                            padding: parent.width * 0.1
 
+                            Image {
+                                width: parent.width * 0.6
+                                height: parent.height * 0.6
+                                source: icon
+                                fillMode: Image.PreserveAspectCrop
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
 
+                            Text {
+                                id: nameText
+                                text: name
 
-		     Column {
-			anchors.centerIn:parent
+                                width: parent.width * 0.9
+                                anchors.horizontalCenter: parent.horizontalCenter
 
-			width: parent.width
-			height:parent.height
+                                horizontalAlignment: Text.AlignHCenter
 
-			
-			padding: parent.width*0.1
+                                font.pixelSize: parent.height * 0.17
+                                font.weight: 500
+                                wrapMode: Text.Wrap
+                            }
+                        }
 
-			Image {
-			   width: parent.width*0.6
-			   height: parent.height*0.6
-			   source: icon
-			   fillMode:Image.PreserveAspectCrop
-			   anchors.horizontalCenter: parent.horizontalCenter
-
-
-			   
-			}
-
-
-
-			Text { 
-			   id: nameText
-			   text: name 
-
-			   width: parent.width*0.9
-			   anchors.horizontalCenter: parent.horizontalCenter
-
-			   horizontalAlignment: Text.AlignHCenter
-
-			   font.pixelSize:parent.height*0.17
-			   font.weight:500
-			   wrapMode: Text.Wrap
-			}
-		     }
-
-		     MouseArea {
-			anchors.fill:parent
-			onClicked: {
-			   userList.selectedIndex = index
-			   username.text = name
-			   userList.forceActiveFocus()
-			}
-
-		     }
-
-		  }
-
-	       }
-
-
-
-
-
-
-	    }
-
-
-
-            //ListView {
-            //    id: userList
-
-            //    width: parent.width
-            //    height: parent.height*0.3
-
-	    //    orientation: Qt.Horizontal
-	    //    focus:true
-
-	    //    clip:true
-
-            //    highlight: Rectangle {
-            //        color: style.primaryColor
-            //        radius: 10
-            //    }
-
-	    //    model: userModel
-	    //    currentIndex: userModel.lastIndex
-
-	    //    Component.onCompleted: {
-	    //       username.text = userList.currentItem.text
-	    //    }
-
-	    //    delegate: Item {
-	    //       id: listItem
-
-	    //       width: Math.min(userList.width*0.35,userList.height)
-	    //       height: Math.min(userList.width*0.35,userList.height)
-
-	    //       property alias text: usrnm.text
-
-	    //       Column {
-	    //          anchors.centerIn:parent
-	    //          Image {
-	    //    	 width: listItem.width*0.6
-	    //    	 height: listItem.height*0.6
-	    //    	 source: icon
-	    //    	 fillMode:Image.PreserveAspectCrop
-	    //    	 anchors.horizontalCenter: parent.horizontalCenter
-	    //          }
-	    //          Text { 
-	    //    	 id:usrnm 
-	    //    	 text: name 
-
-	    //    	 width: listItem.width*0.9
-	    //    	 anchors.horizontalCenter: parent.horizontalCenter
-
-	    //    	 horizontalAlignment: Text.AlignHCenter
-
-	    //    	 font.pixelSize:listItem.height*0.17
-	    //    	 font.weight:500
-	    //    	 wrapMode: Text.Wrap
-	    //          }
-	    //         
-	    //       }
-
-	    //       MouseArea {
-	    //          anchors.fill:parent
-	    //          onClicked: {
-	    //    	 userList.currentIndex = index
-	    //    	 userList.forceActiveFocus()
-	    //    	 // Setting 
-	    //    	 username.text = name
-	    //          }
-	    //       }
-            //    }
-            //}
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                userList.selectedIndex = index;
+                                username.text = name;
+                                userList.forceActiveFocus();
+                            }
+                        }
+                    }
+                }
+            }
 
             Item {
                 width: 1
@@ -483,7 +419,6 @@ Rectangle {
 
             InputField {
                 id: username
-
 
                 width: parent.width
                 height: parent.height * 0.15
@@ -495,6 +430,7 @@ Rectangle {
 
                 KeyNavigation.tab: password
                 KeyNavigation.backtab: keyboard_layout
+
                 Keys.onPressed: function (event) {
                     if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         root.tryLogin();
@@ -511,7 +447,6 @@ Rectangle {
             InputField {
                 id: password
 
-
                 width: parent.width
                 height: parent.height * 0.15
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -523,6 +458,7 @@ Rectangle {
 
                 KeyNavigation.tab: login
                 KeyNavigation.backtab: username
+
                 Keys.onPressed: function (event) {
                     if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         root.tryLogin();
@@ -538,22 +474,22 @@ Rectangle {
             Button {
                 id: login
 
-		text: textConstants.login
+                text: textConstants.login
 
-		font.pixelSize: parent.height * 0.05
-		font.weight: 700
+                font.pixelSize: parent.height * 0.05
+                font.weight: 700
 
                 width: parent.width * 0.4
                 height: parent.height * 0.1
 
-		anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: {
                     root.tryLogin();
                 }
 
                 background: Rectangle {
                     radius: 10
-                    color: login.hovered ? style.primaryColor :  style.secondaryColor
+                    color: login.hovered ? style.primaryColor : style.secondaryColor
                 }
             }
         }

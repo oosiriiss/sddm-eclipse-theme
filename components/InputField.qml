@@ -12,6 +12,11 @@ Item {
         id: style
     }
 
+    onFocusChanged: {
+        if (root.focus)
+            textInput.forceActiveFocus();
+    }
+
     Text {
         id: labelText
         text: root.label
@@ -38,9 +43,11 @@ Item {
 
         color: "transparent"
 
-
-	Behavior on border.width { SmoothedAnimation { velocity:200 } }
-
+        Behavior on border.width {
+            SmoothedAnimation {
+                velocity: 200
+            }
+        }
 
         Text {
             text: root.placeholderText

@@ -10,6 +10,12 @@ ComboBox {
         id: style
     }
 
+    onFocusChanged: {
+       if(comboBox.focus) {
+
+       }
+    }
+
     //contentItem: Rectangle {
     //    text: comboBox.model.valueAt(comboBox.currentIndex).
     //}
@@ -47,6 +53,6 @@ ComboBox {
     }
 
     onCurrentIndexChanged: {
-        console.log("Selected color value:", comboBox.valueAt(comboBox.currentIndex).name);
+        console.log("Selected color value:", comboBox.valueAt(comboBox.currentIndex));
     }
 }
