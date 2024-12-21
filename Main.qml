@@ -307,25 +307,6 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
         }
 
-        //SDDM.LayoutBox {
-        //    id: keyboard_layout
-
-        //    width: parent.width * 0.3
-        //    height: 40
-        //    anchors.verticalCenter: parent.verticalCenter
-        //    anchors.right: parent.right
-
-        //    KeyNavigation.tab: userList
-        //    KeyNavigation.backtab: sessionComboBox
-
-        //    Component.onCompleted: {
-        //        console.log("Model: " + keyboard);
-        //        for (let key in keyboard) {
-        //            console.log("key: " + key + " value: " + keyboard[key]);
-        //        }
-        //    }
-        //}
-
         DropDownMenu {
             id: keyboard_layout
 
