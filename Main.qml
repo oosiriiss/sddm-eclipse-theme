@@ -34,7 +34,7 @@ Rectangle {
     signal tryLogin
 
     onTryLogin: {
-        sddm.login(username.text, password.text, session.currentIndex);
+        sddm.login(username.text, password.text, sessionComboBox.currentIndex);
     }
 
     Image {
@@ -307,32 +307,8 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
         }
 
-        SDDM.LayoutBox {
-            id: keyboard_layout
-
-            width: parent.width * 0.3
-            height: 40
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-
-            KeyNavigation.tab: userList
-            KeyNavigation.backtab: sessionComboBox
-
-            Component.onCompleted: {
-                console.log("Model: " + keyboard);
-                for (let key in keyboard) {
-                    console.log("key: " + key + " value: " + keyboard[key]);
-                }
-            }
-        }
-
-        //DropDownMenu {
+        //SDDM.LayoutBox {
         //    id: keyboard_layout
-
-        //    model: keyboard.layouts
-        //    currentIndex: keyboard.currentLayout
-
-        //    //textRole: "shortName"
 
         //    width: parent.width * 0.3
         //    height: 40
@@ -342,22 +318,46 @@ Rectangle {
         //    KeyNavigation.tab: userList
         //    KeyNavigation.backtab: sessionComboBox
 
-        //    Connections {
-        //        target: keyboard
-
-        //        function onCurrentLayoutChanged() {
-        //            keyboard_layout.currentIndex = keyboard.currentLayout;
+        //    Component.onCompleted: {
+        //        console.log("Model: " + keyboard);
+        //        for (let key in keyboard) {
+        //            console.log("key: " + key + " value: " + keyboard[key]);
         //        }
         //    }
-
-        //    function onValueChanged(id) {
-        //        keyboard.currentLayout = id;
-        //    }
-
-        //    Component.onCompleted: {
-        //        console.log(keyboard.layouts);
-        //    }
         //}
+
+        DropDownMenu {
+            id: keyboard_layout
+
+            model: keyboard.layouts
+            currentIndex: keyboard.currentLayout
+
+            //textRole: "shortName"
+
+            width: parent.width * 0.3
+            height: 40
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+
+            KeyNavigation.tab: userList
+            KeyNavigation.backtab: sessionComboBox
+
+            Connections {
+                target: keyboard
+
+                function onCurrentLayoutChanged() {
+                    keyboard_layout.currentIndex = keyboard.currentLayout;
+                }
+            }
+
+            function onValueChanged(id) {
+                keyboard.currentLayout = id;
+            }
+
+            Component.onCompleted: {
+                console.log(keyboard.layouts);
+            }
+        }
     }
 
     Item {
