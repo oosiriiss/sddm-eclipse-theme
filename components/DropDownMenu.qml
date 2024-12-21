@@ -6,23 +6,42 @@ ComboBox {
 
     property real cornerRadius: 5
 
+
+
     AppStyle {
         id: style
     }
 
-    onFocusChanged: {
-       if(comboBox.focus) {
+    contentItem: Rectangle {
+        height: comboBox.height
+        width: comboBox.width * 0.8
 
-       }
+        clip: true
+        color: "transparent"
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        Text {
+            text: comboBox.displayText
+            elide: Text.ElideRight
+
+            width: parent.width
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 
-    //contentItem: Rectangle {
-    //    text: comboBox.model.valueAt(comboBox.currentIndex).
-    //}
+    background: Rectangle {
+        radius: comboBox.cornerRadius
+        height: comboBox.height
+
+        color: style.secondaryColor
+
+        width: comboBox.width
+    }
 
     popup.y: comboBox.height
     popup.background: Rectangle {
-        radius: 5
+        radius: comboBox.cornerRadius
     }
 
     delegate: ItemDelegate {
@@ -41,8 +60,11 @@ ComboBox {
         }
 
         Text {
-            anchors.centerIn: parent
-            text: name
+            text: model[comboBox.textRole]
+            elide: Text.ElideRight
+
+            width: parent.width
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 
@@ -50,9 +72,5 @@ ComboBox {
         NumberAnimation {
             duration: 200
         }
-    }
-
-    onCurrentIndexChanged: {
-        console.log("Selected color value:", comboBox.valueAt(comboBox.currentIndex));
     }
 }

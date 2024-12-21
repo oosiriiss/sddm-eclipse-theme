@@ -34,7 +34,7 @@ Rectangle {
     signal tryLogin
 
     onTryLogin: {
-        sddm.login(username.text, password.text, session.index);
+        sddm.login(username.text, password.text, session.currentIndex);
     }
 
     Image {
@@ -94,10 +94,14 @@ Rectangle {
 
             anchors.left: parent.left
 
-	    KeyNavigation.tab: hibernate
-	    KeyNavigation.backtab: login
+            KeyNavigation.tab: hibernate
+            KeyNavigation.backtab: login
 
-	    Behavior on icon.color { ColorAnimation { duration:100 } }
+            Behavior on icon.color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
 
             background: Rectangle {
                 color: "transparent"
@@ -120,10 +124,14 @@ Rectangle {
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-	    KeyNavigation.tab: reboot
-	    KeyNavigation.backtab: poweroff
+            KeyNavigation.tab: reboot
+            KeyNavigation.backtab: poweroff
 
-	    Behavior on icon.color { ColorAnimation { duration:100 } }
+            Behavior on icon.color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
 
             onClicked: {
                 sddm.hibernate();
@@ -146,10 +154,14 @@ Rectangle {
 
             anchors.right: parent.right
 
-	    KeyNavigation.tab: sessionComboBox
-	    KeyNavigation.backtab: hibernate
+            KeyNavigation.tab: sessionComboBox
+            KeyNavigation.backtab: hibernate
 
-	    Behavior on icon.color { ColorAnimation { duration:100 } }
+            Behavior on icon.color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
 
             onClicked: {
                 sddm.reboot();
@@ -249,6 +261,7 @@ Rectangle {
 
     // session and keyboard
     Item {
+        height: Math.max(sessionComboBox.height, keyboard_layout.height)
         width: login_box.width
         anchors.top: parent.top
         anchors.topMargin: 20
@@ -256,10 +269,14 @@ Rectangle {
 
         Text {
             id: session_label
+
             text: textConstants.session
-            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: parent.height * 0.4
+            font.weight: 600
+
             anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: parent.height
+
+            verticalAlignment: Text.AlignVCenter
         }
         DropDownMenu {
             id: sessionComboBox
@@ -268,6 +285,7 @@ Rectangle {
             currentIndex: sessionModel.lastIndex
             textRole: "name"
 
+            height: 40
             width: parent.width * 0.3
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: session_label.right
@@ -280,21 +298,45 @@ Rectangle {
         Text {
             id: layout_label
             text: textConstants.layout
-            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: parent.height * 0.4
+            font.weight: 600
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: keyboard_layout.left
-            font.pixelSize: parent.height
+
+            verticalAlignment: Text.AlignVCenter
         }
 
-        SDDM.LayoutBox {
+        DropDownMenu {
             id: keyboard_layout
+
+            model: keyboard.layouts
+	    currentIndex: eyboard.currentLayout
+            //textRole: "shortName"
+
             width: parent.width * 0.3
+            height: 40
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
 
-            KeyNavigation.tab: userList 
+            KeyNavigation.tab: userList
             KeyNavigation.backtab: sessionComboBox
+
+            Connections {
+                target: keyboard
+
+                function onCurrentLayoutChanged() {
+                    keyboard_layout.currentIndex = keyboard.currentLayout;
+                }
+            }
+
+	    function onValueChanged(id) {
+	       keyboard.currentLayout = id
+	    }
+
+	    Component.onCompleted: {
+	       console.log(keyboard.layouts);
+	    }
         }
     }
 
@@ -315,18 +357,15 @@ Rectangle {
             height: parent.height * 0.8
             width: parent.width * 0.8
 
+            UserList {
+                id: userList
 
+                width: parent.width
+                height: parent.height * 0.3
 
-
-	    UserList {
-	       id:userList
-
-	       width:parent.width
-	       height:parent.height*0.3
-
-	       KeyNavigation.tab: username
-	       KeyNavigation.backtab: keyboard_layout
-	    }
+                KeyNavigation.tab: username
+                KeyNavigation.backtab: keyboard_layout
+            }
 
             Item {
                 width: 1
@@ -345,7 +384,7 @@ Rectangle {
                 placeholderText: textConstants.promptUser
 
                 KeyNavigation.tab: password
-                KeyNavigation.backtab: keyboard_layout
+                KeyNavigation.backtab: userList
 
                 Keys.onPressed: function (event) {
                     if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
