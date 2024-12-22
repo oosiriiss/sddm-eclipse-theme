@@ -10,7 +10,10 @@ Rectangle {
     signal tryLogin
 
     onTryLogin: {
-        sddm.login(username.text, password.text, sessionComboBox.currentIndex);
+       loadingIndicator.running = true;
+       login.text = "";
+
+       sddm.login(username.text, password.text, sessionComboBox.currentIndex);
     }
 
     SDDM.TextConstants {
@@ -21,22 +24,25 @@ Rectangle {
         id: style
     }
 
-
     Connections {
         target: sddm
 
         function onLoginSucceeded() {
-	   loginResult.text = "Login Succeded!"
-	   loginResult.color = "#00ff00"
+            login.text = textConstants.login;
+            loadingIndicator.running = false;
+
+            loginResult.text = "Login Succeded!";
+            loginResult.color = "#00ff00";
         }
 
         function onLoginFailed() {
-	   loginResult.text = "Login Succeded!"
-	   loginResult.color = "#00ff00"
+            login.text = textConstants.login;
+            loadingIndicator.running = false;
+
+            loginResult.text = "Login failed";
+            loginResult.color = "#ff0000";
         }
     }
-
-
 
     Image {
         id: background_img
@@ -133,7 +139,6 @@ Rectangle {
             shadowEnabled: true
         }
     }
-
 
     // Power off hiberante suspend
     Item {
@@ -421,17 +426,17 @@ Rectangle {
             }
 
             Item {
-                height: parent.height * 0.6
+                height: parent.height * 0.06
                 width: 1
             }
 
-	    Text {
-	       id: loginResult
-	       text: "Login result"
-	    }
+            Text {
+                id: loginResult
+                text: "Login result"
+            }
 
             Item {
-                height: parent.height * 0.6
+                height: parent.height * 0.06
                 width: 1
             }
 
@@ -447,14 +452,9 @@ Rectangle {
                 height: parent.height * 0.1
 
                 anchors.horizontalCenter: parent.horizontalCenter
+
                 onClicked: {
-		   loadingIndicator.running = true
-		   login.text = ""
-
-                   root.tryLogin();
-
-		   login.text = textConstants.login
-		   loadingIndicator.running = false
+                    root.tryLogin();
                 }
 
                 background: Rectangle {
@@ -462,12 +462,11 @@ Rectangle {
                     color: (login.hovered || login.focus) ? style.primaryColor : style.secondaryColor
                 }
 
-		BusyIndicator {
-		   id: loadingIndicator
-		   running:false
-
-		   anchors.centerIn: parent
-		}
+                BusyIndicator {
+                    id: loadingIndicator
+                    running: false
+                    anchors.centerIn: parent
+                }
             }
         }
     }
