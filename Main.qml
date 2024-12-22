@@ -7,39 +7,40 @@ import "./components"
 Rectangle {
     id: root
 
-    SDDM.TextConstants {
-        id: textConstants
-    }
-
-    Connections {
-        target: sddm
-
-        function onLoginSucceeded() {
-            console.log("Login succeeded");
-        }
-
-        function onLoginFailed() {
-            console.log("Login failed");
-        }
-
-        function onInformationMessage() {
-            console.log("infomration message succeeded");
-        }
-    }
-
-    AppStyle {
-        id: style
-    }
-
     signal tryLogin
 
     onTryLogin: {
         sddm.login(username.text, password.text, sessionComboBox.currentIndex);
     }
 
+    SDDM.TextConstants {
+        id: textConstants
+    }
+
+    AppStyle {
+        id: style
+    }
+
+
+    Connections {
+        target: sddm
+
+        function onLoginSucceeded() {
+	   loginResult.text = "Login Succeded!"
+	   loginResult.color = "#00ff00"
+        }
+
+        function onLoginFailed() {
+	   loginResult.text = "Login Succeded!"
+	   loginResult.color = "#00ff00"
+        }
+    }
+
+
+
     Image {
         id: background_img
-        source: "images/eclipse.jpg"
+        source: Qt.resolvedUrl("images/eclipse.jpg")
         anchors.fill: parent
     }
     ShaderEffectSource {
@@ -68,132 +69,6 @@ Rectangle {
         height: background_blur.height
         width: background_blur.width
         anchors.centerIn: background_blur
-    }
-
-    // Power off hiberante suspend
-    Item {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: parent.width * 0.01
-        anchors.bottomMargin: parent.height * 0.01
-
-        height: parent.height * 0.07
-        width: parent.width * 0.15
-
-        Button {
-            id: poweroff
-
-            icon.name: "power-off"
-            icon.source: "images/poweroff.svg"
-            icon.width: width
-            icon.height: height
-            icon.color: (focus) ? style.primaryColor : style.secondaryColor
-
-            width: parent.width * 0.33
-            height: parent.height
-
-            anchors.left: parent.left
-
-            KeyNavigation.tab: hibernate
-            KeyNavigation.backtab: login
-
-            Behavior on icon.color {
-                ColorAnimation {
-                    duration: 100
-                }
-            }
-
-            background: Rectangle {
-                color: "transparent"
-            }
-            onClicked: {
-                sddm.powerOff();
-            }
-        }
-        Button {
-            id: hibernate
-
-            icon.name: "hibernate"
-            icon.source: "images/hibernate.svg"
-            icon.width: width
-            icon.height: height
-            icon.color: (focus) ? style.primaryColor : style.secondaryColor
-
-            width: parent.width * 0.33
-            height: parent.height
-
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            KeyNavigation.tab: reboot
-            KeyNavigation.backtab: poweroff
-
-            Behavior on icon.color {
-                ColorAnimation {
-                    duration: 100
-                }
-            }
-
-            onClicked: {
-                sddm.hibernate();
-            }
-            background: Rectangle {
-                color: "transparent"
-            }
-        }
-        Button {
-            id: reboot
-
-            icon.name: "reboot"
-            icon.source: "images/reboot.svg"
-            icon.width: width
-            icon.height: height
-            icon.color: (focus) ? style.primaryColor : style.secondaryColor
-
-            width: parent.width * 0.33
-            height: parent.height
-
-            anchors.right: parent.right
-
-            KeyNavigation.tab: sessionComboBox
-            KeyNavigation.backtab: hibernate
-
-            Behavior on icon.color {
-                ColorAnimation {
-                    duration: 100
-                }
-            }
-
-            onClicked: {
-                sddm.reboot();
-            }
-            background: Rectangle {
-                color: "transparent"
-            }
-        }
-        MultiEffect {
-            shadowEnabled: true
-            shadowBlur: 1
-            shadowColor: "black"
-            autoPaddingEnabled: true
-            source: poweroff
-            anchors.fill: poweroff
-        }
-        MultiEffect {
-            shadowEnabled: true
-            shadowBlur: 1
-            shadowColor: "black"
-            autoPaddingEnabled: true
-            source: hibernate
-            anchors.fill: hibernate
-        }
-        MultiEffect {
-            shadowEnabled: true
-            shadowBlur: 1
-            shadowColor: "black"
-            autoPaddingEnabled: true
-            source: reboot
-            anchors.fill: reboot
-        }
     }
 
     // Date and time
@@ -256,6 +131,133 @@ Rectangle {
             shadowBlur: 1
             shadowColor: "black"
             shadowEnabled: true
+        }
+    }
+
+
+    // Power off hiberante suspend
+    Item {
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width * 0.01
+        anchors.bottomMargin: parent.height * 0.01
+
+        height: parent.height * 0.07
+        width: parent.width * 0.15
+
+        Button {
+            id: poweroff
+
+            icon.name: "power-off"
+            icon.source: Qt.resolvedUrl("images/poweroff.svg")
+            icon.width: width
+            icon.height: height
+            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+
+            width: parent.width * 0.33
+            height: parent.height
+
+            anchors.left: parent.left
+
+            KeyNavigation.tab: hibernate
+            KeyNavigation.backtab: login
+
+            Behavior on icon.color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
+
+            background: Rectangle {
+                color: "transparent"
+            }
+            onClicked: {
+                sddm.powerOff();
+            }
+        }
+        Button {
+            id: hibernate
+
+            icon.name: "hibernate"
+            icon.source: Qt.resolvedUrl("images/hibernate.svg")
+            icon.width: width
+            icon.height: height
+            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+
+            width: parent.width * 0.33
+            height: parent.height
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            KeyNavigation.tab: reboot
+            KeyNavigation.backtab: poweroff
+
+            Behavior on icon.color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
+
+            onClicked: {
+                sddm.hibernate();
+            }
+            background: Rectangle {
+                color: "transparent"
+            }
+        }
+        Button {
+            id: reboot
+
+            icon.name: "reboot"
+            icon.source: Qt.resolvedUrl("images/reboot.svg")
+            icon.width: width
+            icon.height: height
+            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+
+            width: parent.width * 0.33
+            height: parent.height
+
+            anchors.right: parent.right
+
+            KeyNavigation.tab: sessionComboBox
+            KeyNavigation.backtab: hibernate
+
+            Behavior on icon.color {
+                ColorAnimation {
+                    duration: 100
+                }
+            }
+
+            onClicked: {
+                sddm.reboot();
+            }
+            background: Rectangle {
+                color: "transparent"
+            }
+        }
+        MultiEffect {
+            shadowEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            autoPaddingEnabled: true
+            source: poweroff
+            anchors.fill: poweroff
+        }
+        MultiEffect {
+            shadowEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            autoPaddingEnabled: true
+            source: hibernate
+            anchors.fill: hibernate
+        }
+        MultiEffect {
+            shadowEnabled: true
+            shadowBlur: 1
+            shadowColor: "black"
+            autoPaddingEnabled: true
+            source: reboot
+            anchors.fill: reboot
         }
     }
 
@@ -333,10 +335,6 @@ Rectangle {
 
             function onValueChanged(id) {
                 keyboard.currentLayout = id;
-            }
-
-            Component.onCompleted: {
-                console.log(keyboard.layouts);
             }
         }
     }
@@ -423,7 +421,17 @@ Rectangle {
             }
 
             Item {
-                height: parent.height * 0.15
+                height: parent.height * 0.6
+                width: 1
+            }
+
+	    Text {
+	       id: loginResult
+	       text: "Login result"
+	    }
+
+            Item {
+                height: parent.height * 0.6
                 width: 1
             }
 
@@ -440,13 +448,26 @@ Rectangle {
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: {
-                    root.tryLogin();
+		   loadingIndicator.running = true
+		   login.text = ""
+
+                   root.tryLogin();
+
+		   login.text = textConstants.login
+		   loadingIndicator.running = false
                 }
 
                 background: Rectangle {
                     radius: 10
                     color: (login.hovered || login.focus) ? style.primaryColor : style.secondaryColor
                 }
+
+		BusyIndicator {
+		   id: loadingIndicator
+		   running:false
+
+		   anchors.centerIn: parent
+		}
             }
         }
     }
