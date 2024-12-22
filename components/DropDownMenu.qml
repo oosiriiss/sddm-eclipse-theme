@@ -49,11 +49,11 @@ ComboBox {
         radius: comboBox.cornerRadius
         height: comboBox.height
 
-        color: style.secondaryColor
+        color: style.tertiaryColor
 
         width: comboBox.width
 
-        border.width: (comboBox.hovered || comboBox.focus) ? 1 : 0
+        border.width: (comboBox.hovered || comboBox.focus) ? 3 : 0
         border.color: (comboBox.hovered || comboBox.focus) ? style.primaryColor : "black"
     }
 

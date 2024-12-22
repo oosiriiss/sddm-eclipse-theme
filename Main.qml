@@ -30,8 +30,6 @@ Rectangle {
         function onLoginSucceeded() {
             login.text = textConstants.login;
             loadingIndicator.running = false;
-        //loginResult.text = "Login Succeded!";
-        //loginResult.color = "#00ff00";
         }
 
         function onLoginFailed() {
@@ -45,8 +43,10 @@ Rectangle {
 
     Image {
         id: background_img
-        source: Qt.resolvedUrl("images/eclipse.jpg")
+        source: style.backgroundImage
         anchors.fill: parent
+
+        fillMode: Image.PreserveAspectCrop
     }
     ShaderEffectSource {
         id: background_blur
@@ -171,7 +171,6 @@ Rectangle {
                     duration: 100
                 }
             }
-
             background: Rectangle {
                 color: "transparent"
             }
@@ -266,15 +265,14 @@ Rectangle {
     }
 
     // session and keyboard
-    Item {
+    Row {
         height: Math.max(sessionComboBox.height, keyboard_layout.height)
-        width: login_box.width
+        //width: login_box.width
         anchors.top: parent.top
-        anchors.topMargin: 20
+        anchors.topMargin: parent.height * 0.01
         anchors.horizontalCenter: login_box.horizontalCenter
 
         Text {
-            id: session_label
 
             text: textConstants.session
             font.pixelSize: parent.height * 0.4
@@ -291,14 +289,18 @@ Rectangle {
             currentIndex: sessionModel.lastIndex
             textRole: "name"
 
-            height: 40
+            height: 35
             width: parent.width * 0.3
             anchors.verticalCenter: parent.verticalCenter
-            anchors.left: session_label.right
 
             KeyNavigation.tab: keyboard_layout
             KeyNavigation.backtab: login
         }
+
+	Item {
+	   width:50
+	   height:1
+	}
 
         //Keyboard Layout
         Text {
@@ -308,7 +310,6 @@ Rectangle {
             font.weight: 600
 
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: keyboard_layout.left
 
             verticalAlignment: Text.AlignVCenter
         }
@@ -319,12 +320,9 @@ Rectangle {
             model: keyboard.layouts
             currentIndex: keyboard.currentLayout
 
-            //textRole: "shortName"
-
             width: parent.width * 0.3
-            height: 40
+            height: 35
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
 
             KeyNavigation.tab: userList
             KeyNavigation.backtab: sessionComboBox
@@ -364,7 +362,7 @@ Rectangle {
                 id: userList
 
                 width: parent.width
-                height: parent.height * 0.3
+                height: parent.height * 0.35
 
                 KeyNavigation.tab: username
                 KeyNavigation.backtab: keyboard_layout
@@ -447,7 +445,7 @@ Rectangle {
 
                 text: textConstants.login
 
-                font.pixelSize: parent.height * 0.05
+                font.pixelSize: height * 0.5
                 font.weight: 700
 
                 width: parent.width * 0.4

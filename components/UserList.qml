@@ -6,8 +6,7 @@ Row {
 
     clip: true
 
-    // Todo:: set selectedIndex to the index of LastUser
-    property int selectedIndex: 0
+    property int selectedIndex: userModel.lastIndex
     spacing: 15
 
     Keys.onPressed: function (event) {
@@ -23,8 +22,8 @@ Row {
 
         delegate: Item {
 
-            height: Math.min((userList.width - 2 * userList.spacing) / 3, userList.height)
-            width: Math.min((userList.width - 2 * userList.spacing) / 3, userList.height)
+            height: userList.height
+            width: userList.height
 
             opacity: (index === userList.selectedIndex) ? 1 : 0.5
 
