@@ -10,10 +10,10 @@ Rectangle {
     signal tryLogin
 
     onTryLogin: {
-       loadingIndicator.running = true;
-       login.text = "";
+        loadingIndicator.running = true;
+        login.text = "";
 
-       sddm.login(username.text, password.text, sessionComboBox.currentIndex);
+        sddm.login(username.text, password.text, sessionComboBox.currentIndex);
     }
 
     SDDM.TextConstants {
@@ -30,9 +30,8 @@ Rectangle {
         function onLoginSucceeded() {
             login.text = textConstants.login;
             loadingIndicator.running = false;
-
-            loginResult.text = "Login Succeded!";
-            loginResult.color = "#00ff00";
+        //loginResult.text = "Login Succeded!";
+        //loginResult.color = "#00ff00";
         }
 
         function onLoginFailed() {
@@ -432,7 +431,10 @@ Rectangle {
 
             Text {
                 id: loginResult
-                text: "Login result"
+                text: ""
+
+                font.pixelSize: parent.height * 0.04
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
             Item {
