@@ -1,5 +1,17 @@
-# sddm-eclipse-theme
-- Test Configuration with ```sddm-greeter --test-mode --theme <THEME>```
+# SDDM Eclipse Theme 
+
+## Sample
+
+![Sample image](./sample.png)
+
+
+## Description
+
+This was my first time with QML and SDDM theming. Therefore I can't guarantee perfect quality, although I didn't encounter any issues.
+It was developed for my Arch Linux setup on a 1920x1080 screen. Other screen sizes were not tested.
+
+
+- Test Configuration with ```sddm-greeter-qt6 --test-mode --theme <THEME>```
 - SDDM theming docs: https://github.com/sddm/sddm/blob/develop/docs/THEMING.md
 
 ## Installation
