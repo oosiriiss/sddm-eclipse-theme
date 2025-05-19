@@ -392,6 +392,7 @@ Rectangle {
                         root.tryLogin();
                     }
                 }
+
             }
 
             // Spacer
@@ -401,6 +402,9 @@ Rectangle {
             }
 
             InputField {
+	        // Initial focus on password
+		focus:true
+
                 id: password
 
                 width: parent.width
