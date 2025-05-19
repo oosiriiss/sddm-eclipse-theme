@@ -3,7 +3,7 @@ import SddmComponents 2.0
 
 QtObject {
 
-    readonly property string backgroundImage: Qt.resolvedUrl(config.backgroundImage ? config.backgroundImage : "../images/eclipse.jpg")
+    readonly property string backgroundImage: Qt.resolvedUrl(config.backgroundImage ? config.backgroundImage : "../images/eclipse.png")
 
     readonly property color primaryColor: config.primaryColor ? config.primaryColor : "#ee5555"
     readonly property color secondaryColor: config.secondaryColor ? config.secondaryColor : "#bb4444"

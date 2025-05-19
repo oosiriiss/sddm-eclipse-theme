@@ -68,7 +68,7 @@ Rectangle {
         blurMultiplier: 0.5
         blurEnabled: true
 
-        brightness: -0.03
+        brightness: -0.01
 
         autoPaddingEnabled: true
         height: background_blur.height
