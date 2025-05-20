@@ -1,5 +1,44 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Effects
+
+
+
+
+
+Row {
+
+   property alias labelText: label.text
+
+   property alias model: comboBox.model
+   property alias currentIndex: comboBox.currentIndex
+   property alias textRole: comboBox.textRole
+
+   spacing: 5
+
+
+   AppStyle {
+       id: style
+   }
+
+
+    Rectangle {
+       anchors.fill:parent
+
+      color: "#80000000"
+    }
+
+   Text {
+      id: label
+
+      // font.pixelSize: parent.height * 0.4
+      font.pixelSize: 20
+      font.weight: 600
+
+      color: style.secondaryColor
+      anchors.verticalCenter: parent.verticalCenter
+      verticalAlignment: Text.AlignVCenter
+   }
 
 ComboBox {
     id: comboBox
@@ -7,9 +46,9 @@ ComboBox {
     property real cornerRadius: 5
     property int hoveredIndex: -1
 
-    AppStyle {
-        id: style
-    }
+    height:parent.height
+    width: parent.width - label.width
+
 
     Keys.onPressed: function (event) {
         if (comboBox.focus && comboBox.activated) {
@@ -21,6 +60,8 @@ ComboBox {
                 comboBox.hoveredIndex -= 1;
         }
     }
+
+
 
     contentItem: Rectangle {
 
@@ -49,7 +90,7 @@ ComboBox {
         radius: comboBox.cornerRadius
         height: comboBox.height
 
-        color: style.tertiaryColor
+        color: style.secondaryColor
 
         width: comboBox.width
 
@@ -60,6 +101,7 @@ ComboBox {
     popup.y: comboBox.height
     popup.background: Rectangle {
         radius: comboBox.cornerRadius
+	color: style.secondaryColor
     }
 
     delegate: ItemDelegate {
@@ -95,3 +137,6 @@ ComboBox {
         }
     }
 }
+}
+
+
