@@ -22,7 +22,7 @@ It was developed for my Arch Linux setup on a 1920x1080 screen. Other screen siz
 ```sudo cp -r sddm-eclipse-theme /usr/share/sddm/themes/eclipse```
 3. Create config in ```/etc/sddm.conf.d/<your_theme_name>.conf```. The default config file  is located in ```/usr/lib/sddm/sddm.conf.d```
 > [!IMPORTANT]
-> Make sure to set the current theme with the name of the theme in ```/usr/share/sddm/themes/```
+> Make sure to set the current theme with the name of the theme in ```/usr/share/sddm/themes/```(eclipse)
 4. Set ```Current=eclipse``` under **[Theme]** section.
 
 ## Troubleshooting

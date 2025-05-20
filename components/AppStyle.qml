@@ -9,8 +9,8 @@ QtObject {
     readonly property color secondaryColor: config.secondaryColor ? config.secondaryColor : "#bb4444"
     readonly property color tertiaryColor: config.tertiaryColor ? config.tertiaryColor : "#dd7777"
 
-    readonly property color primaryContainerColor: config.primaryContainerColor ? config.primaryContainerColor : "#222222"
-    readonly property color secondaryContainerColor: config.secondaryContainerColor ? config.secondaryContainerColor : "#444444"
+   // readonly property color primaryContainerColor: config.primaryContainerColor ? config.primaryContainerColor : "#222222"
+   // readonly property color secondaryContainerColor: config.secondaryContainerColor ? config.secondaryContainerColor : "#444444"
 
     readonly property string passwordCharacter: config.passwordCharacter ? config.passwordCharacter : "●"
 }

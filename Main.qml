@@ -68,7 +68,7 @@ Rectangle {
         blurMultiplier: 0.5
         blurEnabled: true
 
-        brightness: -0.01
+        brightness: 0
 
         autoPaddingEnabled: true
         height: background_blur.height
@@ -269,53 +269,35 @@ Rectangle {
         height: Math.max(sessionComboBox.height, keyboard_layout.height)
         //width: login_box.width
         anchors.top: parent.top
-        anchors.topMargin: parent.height * 0.01
+        anchors.topMargin: parent.height * 0.05
         anchors.horizontalCenter: login_box.horizontalCenter
 
-        Text {
+	anchors.left: login_box.left
+	anchors.right: login_box.right
 
-            text: textConstants.session
-            font.pixelSize: parent.height * 0.4
-            font.weight: 600
+	spacing: login_box.width * 0.1
 
-            anchors.verticalCenter: parent.verticalCenter
-
-            verticalAlignment: Text.AlignVCenter
-        }
         DropDownMenu {
             id: sessionComboBox
+
+	    labelText: textConstants.session
 
             model: sessionModel
             currentIndex: sessionModel.lastIndex
             textRole: "name"
 
-            height: 35
-            width: parent.width * 0.3
+	    height:35
+            width: parent.width * 0.45
             anchors.verticalCenter: parent.verticalCenter
 
             KeyNavigation.tab: keyboard_layout
             KeyNavigation.backtab: login
         }
 
-	Item {
-	   width:50
-	   height:1
-	}
-
-        //Keyboard Layout
-        Text {
-            id: layout_label
-            text: textConstants.layout
-            font.pixelSize: parent.height * 0.4
-            font.weight: 600
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            verticalAlignment: Text.AlignVCenter
-        }
-
         DropDownMenu {
             id: keyboard_layout
+
+	    labelText: textConstants.layout
 
             model: keyboard.layouts
             currentIndex: keyboard.currentLayout
