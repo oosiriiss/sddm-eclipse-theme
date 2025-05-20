@@ -270,7 +270,6 @@ Rectangle {
         //width: login_box.width
         anchors.top: parent.top
         anchors.topMargin: parent.height * 0.05
-        anchors.horizontalCenter: login_box.horizontalCenter
 
 	anchors.left: login_box.left
 	anchors.right: login_box.right

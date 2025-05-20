@@ -7,6 +7,7 @@ import QtQuick.Effects
 
 
 Row {
+   id: root
 
    property alias labelText: label.text
 
@@ -16,17 +17,17 @@ Row {
 
    spacing: 5
 
+    onFocusChanged: {
+        if (root.focus) {
+            comboBox.forceActiveFocus()
+        }
+    }
 
    AppStyle {
        id: style
    }
 
 
-    Rectangle {
-       anchors.fill:parent
-
-      color: "#80000000"
-    }
 
    Text {
       id: label
@@ -51,6 +52,7 @@ ComboBox {
 
 
     Keys.onPressed: function (event) {
+
         if (comboBox.focus && comboBox.activated) {
             if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter)
                 comboBox.currentIndex = comboBox.hoveredIndex;
@@ -59,8 +61,7 @@ ComboBox {
             else if ((event.key == Qt.Key_W || event.key == Qt.Key_Up) && comboBox.hoveredIndex > 0)
                 comboBox.hoveredIndex -= 1;
         }
-    }
-
+      }
 
 
     contentItem: Rectangle {
@@ -95,7 +96,7 @@ ComboBox {
         width: comboBox.width
 
         border.width: (comboBox.hovered || comboBox.focus) ? 3 : 0
-        border.color: (comboBox.hovered || comboBox.focus) ? style.primaryColor : "black"
+        border.color: (comboBox.hovered || comboBox.focus) ? style.primaryColor : "transparent"
     }
 
     popup.y: comboBox.height
