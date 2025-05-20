@@ -15,6 +15,7 @@ Row {
    property alias currentIndex: comboBox.currentIndex
    property alias textRole: comboBox.textRole
 
+
    spacing: 5
 
     onFocusChanged: {
@@ -49,6 +50,9 @@ ComboBox {
 
     height:parent.height
     width: parent.width - label.width
+
+    KeyNavigation.tab: root.KeyNavigation.tab
+    KeyNavigation.backtab: root.KeyNavigation.backtab
 
 
     Keys.onPressed: function (event) {
