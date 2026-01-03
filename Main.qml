@@ -48,6 +48,7 @@ Rectangle {
 
         fillMode: Image.PreserveAspectCrop
     }
+
     ShaderEffectSource {
         id: background_blur
         sourceItem: background_img
@@ -60,6 +61,7 @@ Rectangle {
 
         sourceRect: Qt.rect(x, y, width, height)
     }
+
     MultiEffect {
         source: background_blur
 
@@ -156,7 +158,7 @@ Rectangle {
             icon.source: Qt.resolvedUrl("images/poweroff.svg")
             icon.width: width
             icon.height: height
-            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+            icon.color: (hovered) ? style.primaryColor : style.secondaryColor
 
             width: parent.width * 0.33
             height: parent.height
@@ -185,7 +187,7 @@ Rectangle {
             icon.source: Qt.resolvedUrl("images/hibernate.svg")
             icon.width: width
             icon.height: height
-            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+            icon.color: (hovered) ? style.primaryColor : style.secondaryColor
 
             width: parent.width * 0.33
             height: parent.height
@@ -215,7 +217,7 @@ Rectangle {
             icon.source: Qt.resolvedUrl("images/reboot.svg")
             icon.width: width
             icon.height: height
-            icon.color: (focus) ? style.primaryColor : style.secondaryColor
+            icon.color: (hovered) ? style.primaryColor : style.secondaryColor
 
             width: parent.width * 0.33
             height: parent.height
